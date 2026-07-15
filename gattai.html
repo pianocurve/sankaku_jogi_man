@@ -135,21 +135,32 @@
                     <div class="flex flex-col items-center animate-float-slow">
                         <div class="w-28 h-28 relative">
                             <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <!-- 分度器ヘッド -->
                                 <path d="M 20,35 A 30,30 0 0,1 80,35 Z" fill="#fef08a" stroke="#eab308" stroke-width="3"/>
+                                <!-- 分度器の目盛り線 -->
                                 <line x1="50" y1="35" x2="50" y2="5" stroke="#eab308" stroke-width="1.5"/>
                                 <line x1="50" y1="35" x2="23" y2="20" stroke="#eab308" stroke-width="1"/>
                                 <line x1="50" y1="35" x2="77" y2="20" stroke="#eab308" stroke-width="1"/>
                                 <line x1="20" y1="35" x2="80" y2="35" stroke="#eab308" stroke-width="3"/>
-                                <circle cx="50" cy="35" r="4" fill="#ef4444"/>
+                                <circle cx="50" cy="35" r="4" fill="#ef4444"/> <!-- 中心点 -->
+                                
+                                <!-- 顔 -->
                                 <circle cx="50" cy="55" r="16" fill="#ffddcc" stroke="#333" stroke-width="2"/>
+                                <!-- いつもニヤニヤ笑っている目 -->
                                 <path d="M 40,51 Q 44,48 48,51" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
                                 <path d="M 52,51 Q 56,48 60,51" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                                <!-- ちょび髭 -->
                                 <ellipse cx="50" cy="59" rx="5" ry="2" fill="#854d0e"/>
+                                <!-- 笑っている口 -->
                                 <path d="M 44,61 Q 50,66 56,61" fill="none" stroke="#333" stroke-width="2"/>
+                                
+                                <!-- タイツの体(赤・黄) -->
                                 <rect x="42" y="71" width="16" height="18" fill="#dc2626" rx="2"/>
                                 <rect x="42" y="71" width="8" height="18" fill="#fbbf24"/>
                                 <line x1="44" y1="89" x2="40" y2="98" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
                                 <line x1="56" y1="89" x2="60" y2="98" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
+                                
+                                <!-- 分度器の杖 -->
                                 <line x1="38" y1="73" x2="25" y2="85" stroke="#333" stroke-width="2"/>
                                 <path d="M 15,85 A 10,10 0 0,1 35,85 Z" fill="#fef08a" stroke="#333" stroke-width="1.5"/>
                                 <line x1="15" y1="85" x2="35" y2="85" stroke="#333" stroke-width="2"/>
@@ -332,7 +343,7 @@
                         <span class="font-bold text-blue-600">三角じょうぎマン</span>
                         <p class="mt-1 font-semibold text-slate-800">「やったね！角度をあわせる『たし算』、直線や1周から引く『ひき算』、ぜんぶカンペキだ！」</p>
                     </div>
-                    <!-- じょうぎマン -->
+                    <!-- じぎマン -->
                     <div class="w-16 h-16 shrink-0">
                         <svg viewBox="0 0 100 100" class="w-full h-full">
                             <circle cx="50" cy="50" r="40" fill="#ffddcc" stroke="#333" stroke-width="3"/>
@@ -344,8 +355,8 @@
                 </div>
 
                 <div class="bg-amber-100 p-3 rounded-xl border border-amber-300 text-xs md:text-sm leading-relaxed font-bold text-amber-900 text-center">
-                    ぶんどキング「これで角度の宿題は完ペキだな！さすがは我が愛するジョウギル王子…」<br>
-                    三角じょうぎマン「オ、オヤジ〜！算数シートの問題も、これでばっちり100点満点だ！」
+                    ぶんどキング「お前はじょうぎ星で行方不明（ゆくえふめい）になった、私の愛する王子…ジョウギルだ！」<br>
+                    三角じょうぎマン「ええっ！？お、オヤジ！？…まさか角度の学習が苦手な地球の子供たちのために、わざと悪役を演じていたのか！？」
                 </div>
             </div>
 
@@ -616,11 +627,19 @@
             // ラベル文字「あ」「い」の位置計算
             let midAngle;
             if (forceAnticlockwise) {
-                let diff = endAngle - startAngle;
-                if (diff > 0) diff -= Math.PI * 2;
-                midAngle = startAngle + diff / 2;
+                // 反時計回りの場合
+                let s = startAngle;
+                let e = endAngle;
+                // e が s より大きければ、s から反時計回りに進むために e から 2*PI を引く
+                if (e > s) e -= Math.PI * 2;
+                midAngle = s + (e - s) / 2;
             } else {
-                midAngle = startAngle + (endAngle - startAngle) / 2;
+                // 時計回りの場合（通常および360度問題）
+                let s = startAngle;
+                let e = endAngle;
+                // e が s より小さければ、s から時計回りに進むために e に 2*PI を足す
+                if (e < s) e += Math.PI * 2;
+                midAngle = s + (e - s) / 2;
             }
             
             const textDist = radius + 20;
@@ -759,8 +778,8 @@
                 const rA = drawSetSquareAbsolute('iso', p.indexA, cx, cy, 0, -1);
                 const rB = drawSetSquareAbsolute('scal', p.indexB, cx, cy, 0, 1);
 
-                // 定規Bの端から定規Aの端まで、定規を避けて外側をぐるっと1周覆う（反時計回り）
-                drawAngleArc(rB.endAngle, rA.endAngle, p.label, 48, cx, cy, true);
+                // ★定規を避けて外周の広い部分に正確に色をつける（反時計回り true から、時計回り false に修正！）★
+                drawAngleArc(rB.endAngle, rA.endAngle, p.label, 48, cx, cy, false);
             }
         }
 
@@ -780,13 +799,14 @@
                 }
             }
 
-            // 数字の低い順に並べて表示
-            const sortedChoices = Array.from(choicesSet).sort((a, b) => a - b);
+            // 4つの数値を配列にして、表示位置を完全にランダムにシャッフルする
+            const choicesArray = Array.from(choicesSet);
+            choicesArray.sort(() => Math.random() - 0.5);
 
             const container = document.getElementById('choices-container');
             container.innerHTML = '';
 
-            sortedChoices.forEach((val, idx) => {
+            choicesArray.forEach((val, idx) => {
                 const label = ["A", "B", "C", "D"][idx];
                 const btn = document.createElement('button');
                 btn.className = "choice-btn py-3 px-4 bg-blue-50 hover:bg-blue-100 active:scale-95 text-blue-900 border-2 border-blue-200 rounded-2xl font-bold transition-all text-sm md:text-base text-left flex items-center justify-between shadow-sm hover:border-blue-400";
@@ -811,6 +831,7 @@
             const heroSprite = document.getElementById('hero-sprite');
             const enemySprite = document.getElementById('enemy-sprite');
             const slashEffect = document.getElementById('slash-effect');
+            const nextBtnEl = document.getElementById('next-btn'); // ボタン要素を取得
 
             if (isCorrect) {
                 sounds.playCorrect();
@@ -843,6 +864,11 @@
                     expl = `大せいかい！1周の360度から、くっついた2つの角をひいて、360度 ─ (${p.angleA}度 ＋ ${p.angleB}度) ＝ ${p.ans}度 になるね！`;
                 }
                 document.getElementById('feedback-desc').textContent = expl;
+                
+                // ボタンのテキストと色を変更 (正解用)
+                nextBtnEl.textContent = "つぎの問題へすすむ！";
+                nextBtnEl.className = "w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md font-pixel transition-colors";
+                
                 document.getElementById('feedback-panel').classList.remove('hidden');
 
             } else {
@@ -858,7 +884,12 @@
                 document.getElementById('feedback-icon').textContent = "😈";
                 document.getElementById('feedback-title').textContent = "ちがうよ！おしい！";
                 document.getElementById('feedback-title').className = "text-2xl font-black text-red-500 font-pixel";
-                document.getElementById('feedback-desc').textContent = "ぶんどキング「ワハハ！計算ミスをしていないかな？定規のそれぞれの角度（30°,45°,60°,90°）をよーく思い出して、計算しなおしてみよう！」";
+                document.getElementById('feedback-desc').textContent = `ぶんどキング「ワハハ！計算ミスをしていないかな？定規のそれぞれの角度（30°,45°,60°,90°）をよーく思い出して、計算しなおしてみよう！」`;
+                
+                // ボタンのテキストと色を変更 (不正解用)
+                nextBtnEl.textContent = "もう一度やり直す";
+                nextBtnEl.className = "w-full py-3 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold rounded-xl shadow-md font-pixel transition-colors";
+
                 document.getElementById('feedback-panel').classList.remove('hidden');
             }
         }
