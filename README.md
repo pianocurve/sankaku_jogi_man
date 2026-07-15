@@ -6,6 +6,12 @@
 
 本プロジェクトは、全国の悩める小学4年生に向けて、YouTube展開を想定して企画された教育用キャラクター「三角じょうぎマン」を主役とした、完全無料・インストール不要のインタラクティブ角度学習ゲーム（Webアプリケーション）です。
 
+角度バトル（基礎知識）
+https://pianocurve.github.io/sankaku_jogi_man/
+
+角度計算バトル（定規合体計算）
+https://pianocurve.github.io/sankaku_jogi_man/gattai.html
+
 ## 📖 ストーリー ＆ キャラクター紹介
 
 ### 🔺 三角じょうぎマン（じょうぎ星の王子・ジョウギル）
