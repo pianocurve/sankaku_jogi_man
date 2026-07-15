@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>三角じょうぎマン vs ぶんどキング 角度バトル！</title>
-    <!-- Tailwind CSS -->
+    <title>三角じょうぎマンの角度計算バトル！</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* アニメーション用のカスタムスタイル */
@@ -64,7 +63,6 @@
 </head>
 <body class="bg-amber-50 font-friendly min-h-screen text-slate-800 flex flex-col justify-between overflow-x-hidden">
 
-    <!-- ヘッダー -->
     <header class="bg-blue-600 text-white py-3 px-4 shadow-md flex justify-between items-center z-10">
         <div class="flex items-center space-x-2">
             <span class="text-2xl">▲</span>
@@ -74,101 +72,74 @@
             <button id="bgm-toggle" class="bg-blue-800 hover:bg-blue-900 text-white text-xs py-1 px-3 rounded-full transition-colors flex items-center space-x-1 border border-blue-400">
                 <span>🔊 BGM: ON</span>
             </button>
-            <div class="text-xs bg-blue-700 px-2 py-1 rounded">小4算数・角度</div>
+            <div class="text-xs bg-blue-700 px-2 py-1 rounded">小4算数・角度の計算</div>
         </div>
     </header>
 
-    <!-- メインゲームコンテナ -->
     <main class="flex-grow flex flex-col items-center justify-center p-2 md:p-4 max-w-4xl w-full mx-auto">
         
-        <!-- ================= スクリーン1: オープニング画面 ================= -->
         <div id="screen-intro" class="w-full bg-white rounded-3xl p-6 shadow-xl border-4 border-blue-400 text-center flex flex-col items-center space-y-6">
             <div class="relative w-full py-4 bg-gradient-to-r from-blue-100 via-amber-100 to-red-100 rounded-2xl overflow-hidden shadow-inner border border-amber-200">
                 <h2 class="text-3xl md:text-5xl font-extrabold text-blue-600 drop-shadow-md font-pixel mb-1 animate-pulse">
-                    角度バトル！
+                    角度計算バトル！
                 </h2>
-                <p class="text-md md:text-lg text-slate-600 font-bold">〜 じょうぎ星の王子のなぞ 〜</p>
+                <p class="text-md md:text-lg text-slate-600 font-bold">〜 合体三角じょうぎのナゾ 〜</p>
                 
-                <!-- キャラクタースタンド -->
                 <div class="flex justify-around items-end mt-8 px-4 h-44 relative">
-                    <!-- 三角じょうぎマン -->
                     <div class="flex flex-col items-center animate-bounce-slow">
-                        <!-- 自作SVG -->
                         <div class="w-28 h-28 relative">
-                            <!-- 三角じょうぎマン全身 -->
                             <svg viewBox="0 0 100 100" class="w-full h-full">
-                                <!-- バンダナと顔 -->
                                 <circle cx="50" cy="35" r="20" fill="#ffddcc" stroke="#333" stroke-width="2"/>
                                 <rect x="30" y="20" width="40" height="8" fill="#1d4ed8" rx="2"/>
-                                <!-- トライフォース風マーク -->
                                 <polygon points="50,21 46,27 54,27" fill="#facc15" stroke="#333" stroke-width="0.5"/>
-                                <!-- ギザギザ歯の口 -->
                                 <path d="M 40,43 Q 50,48 60,43" fill="none" stroke="#333" stroke-width="2"/>
                                 <polygon points="42,43 45,43 43.5,46" fill="#fff"/>
                                 <polygon points="46,44 49,44 47.5,47" fill="#fff"/>
                                 <polygon points="51,44 54,44 52.5,47" fill="#fff"/>
                                 <polygon points="55,43 58,43 56.5,46" fill="#fff"/>
-                                <!-- 目の炎 -->
                                 <ellipse cx="43" cy="32" rx="3" ry="5" fill="#333"/>
                                 <ellipse cx="57" cy="32" rx="3" ry="5" fill="#333"/>
                                 <path d="M 40,26 Q 43,21 41,27 Q 44,28 43,30" fill="#ef4444" class="animate-flame"/>
                                 <path d="M 54,26 Q 57,21 55,27 Q 58,28 57,30" fill="#ef4444" class="animate-flame"/>
-                                <!-- 青タイツの体 -->
                                 <rect x="42" y="55" width="16" height="25" fill="#1e40af" rx="4"/>
-                                <polygon points="50,58 45,67 55,67" fill="#facc15"/> <!-- 胸の三角 -->
+                                <polygon points="50,58 45,67 55,67" fill="#facc15"/>
                                 <line x1="42" y1="75" x2="35" y2="92" stroke="#1e40af" stroke-width="5" stroke-linecap="round"/>
                                 <line x1="58" y1="75" x2="65" y2="92" stroke="#1e40af" stroke-width="5" stroke-linecap="round"/>
-                                <!-- 赤い靴 -->
                                 <path d="M 30,92 C 30,92 35,90 38,95" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
                                 <path d="M 70,92 C 70,92 65,90 62,95" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
-                                <!-- ダンボール30度剣 (右腕) -->
                                 <line x1="42" y1="58" x2="25" y2="65" stroke="#333" stroke-width="2"/>
                                 <polygon points="25,50 10,80 25,80" fill="#d7b58a" stroke="#b28a5b" stroke-width="1.5"/>
-                                <path d="M 25,50 L 10,80 L 25,80 Z" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="2,2"/> <!-- 青いテープ -->
-                                <circle cx="20" cy="70" r="2.5" fill="#fff" stroke="#333" stroke-width="1"/> <!-- 穴 -->
-                                <!-- ダンボール45度盾 (左腕) -->
+                                <path d="M 25,50 L 10,80 L 25,80 Z" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="2,2"/>
+                                <circle cx="20" cy="70" r="2.5" fill="#fff" stroke="#333" stroke-width="1"/>
                                 <line x1="58" y1="58" x2="72" y2="62" stroke="#333" stroke-width="2"/>
                                 <polygon points="70,55 90,55 80,75" fill="#d7b58a" stroke="#b28a5b" stroke-width="1.5"/>
-                                <path d="M 70,55 L 90,55 L 80,75 Z" fill="none" stroke="#2563eb" stroke-width="2"/> <!-- 青テープ -->
-                                <circle cx="80" cy="61" r="2.5" fill="#fff" stroke="#333" stroke-width="1"/> <!-- 穴 -->
+                                <path d="M 70,55 L 90,55 L 80,75 Z" fill="none" stroke="#2563eb" stroke-width="2"/>
+                                <circle cx="80" cy="61" r="2.5" fill="#fff" stroke="#333" stroke-width="1"/>
                             </svg>
                         </div>
                         <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-bold border border-blue-300">三角じょうぎマン</span>
                     </div>
 
-                    <!-- VS -->
                     <div class="text-2xl font-black text-red-600 font-pixel self-center py-2 px-4 bg-yellow-400 rounded-full border-2 border-red-600 animate-pulse">VS</div>
 
-                    <!-- ぶんどキング -->
                     <div class="flex flex-col items-center animate-float-slow">
                         <div class="w-28 h-28 relative">
                             <svg viewBox="0 0 100 100" class="w-full h-full">
-                                <!-- 分度器ヘッド -->
                                 <path d="M 20,35 A 30,30 0 0,1 80,35 Z" fill="#fef08a" stroke="#eab308" stroke-width="3"/>
-                                <!-- 分度器の目盛り線 -->
                                 <line x1="50" y1="35" x2="50" y2="5" stroke="#eab308" stroke-width="1.5"/>
                                 <line x1="50" y1="35" x2="23" y2="20" stroke="#eab308" stroke-width="1"/>
                                 <line x1="50" y1="35" x2="77" y2="20" stroke="#eab308" stroke-width="1"/>
                                 <line x1="20" y1="35" x2="80" y2="35" stroke="#eab308" stroke-width="3"/>
-                                <circle cx="50" cy="35" r="4" fill="#ef4444"/> <!-- 中心点 -->
-                                
-                                <!-- 顔 -->
+                                <circle cx="50" cy="35" r="4" fill="#ef4444"/>
                                 <circle cx="50" cy="55" r="16" fill="#ffddcc" stroke="#333" stroke-width="2"/>
-                                <!-- いつもニヤニヤ笑っている目 -->
                                 <path d="M 40,51 Q 44,48 48,51" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
                                 <path d="M 52,51 Q 56,48 60,51" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
-                                <!-- ちょび髭 -->
                                 <ellipse cx="50" cy="59" rx="5" ry="2" fill="#854d0e"/>
-                                <!-- 笑っている口 -->
                                 <path d="M 44,61 Q 50,66 56,61" fill="none" stroke="#333" stroke-width="2"/>
-                                
-                                <!-- タイツの体(赤・黄) -->
                                 <rect x="42" y="71" width="16" height="18" fill="#dc2626" rx="2"/>
                                 <rect x="42" y="71" width="8" height="18" fill="#fbbf24"/>
                                 <line x1="44" y1="89" x2="40" y2="98" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
                                 <line x1="56" y1="89" x2="60" y2="98" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
-                                
-                                <!-- 分度器の杖 -->
                                 <line x1="38" y1="73" x2="25" y2="85" stroke="#333" stroke-width="2"/>
                                 <path d="M 15,85 A 10,10 0 0,1 35,85 Z" fill="#fef08a" stroke="#333" stroke-width="1.5"/>
                                 <line x1="15" y1="85" x2="35" y2="85" stroke="#333" stroke-width="2"/>
@@ -179,11 +150,10 @@
                 </div>
             </div>
 
-            <!-- 説明テキスト -->
             <div class="max-w-md mx-auto space-y-3 text-left bg-blue-50 p-4 rounded-xl border border-blue-100 text-sm md:text-base leading-relaxed">
-                <p class="font-bold text-center text-blue-700 text-lg">わるい「ぶんどキング」があらわれた！</p>
-                <p>「ふっふっふ、小学生のみなさん！角度なんてむずかしくてわからないだろ？分度器（ぶんどき）のなぞが解けなければ、勉強をあきらめてもらうぞ！」</p>
-                <p class="text-slate-600 font-medium">じょうぎ星の王子「三角じょうぎマン」といっしょに、ぶんどキングが出す3つの角度クイズにちょうせんして、必殺（ひっさつ）の三角じょうぎアタックでやっつけよう！</p>
+                <p class="font-bold text-center text-blue-700 text-lg">ぶんどキングがふたたびあらわれた！</p>
+                <p>「ふっふっふ！今度は2つの三角定規（三角じょうぎ）を組み合わせた、合体角度の問題（もんだい）だ！計算してオレ様の出すナゾをといてみよ！」</p>
+                <p class="text-slate-600 font-medium">三角じょうぎマンといっしょに、組み合わされた角度をすばやく計算して、ぶんどキングをやっつけよう！</p>
             </div>
 
             <button id="start-btn" class="w-full max-w-sm py-4 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-slate-900 text-2xl font-black rounded-2xl shadow-lg border-b-8 border-amber-700 active:border-b-2 active:translate-y-1 transition-all font-pixel">
@@ -191,50 +161,39 @@
             </button>
         </div>
 
-        <!-- ================= スクリーン2: メインバトル画面 ================= -->
         <div id="screen-game" class="w-full bg-white rounded-3xl p-4 md:p-6 shadow-xl border-4 border-blue-400 flex flex-col space-y-4 hidden">
             
-            <!-- 上部: バトルヘッダー (HPゲージとステージ) -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center border-b pb-3 border-slate-100">
-                <!-- ステージ表示 -->
                 <div class="md:col-span-3 text-center md:text-left">
                     <span id="stage-badge" class="bg-blue-600 text-white font-pixel text-sm px-3 py-1.5 rounded-full inline-block shadow-sm">
-                        第1戦：めもりのナゾ
+                        三角じょうぎ計算バトル
                     </span>
                 </div>
-                <!-- ぶんどキングHP -->
                 <div class="md:col-span-9 flex items-center space-x-2">
                     <span class="text-xs font-bold text-slate-500 font-pixel whitespace-nowrap">ぶんどキング HP:</span>
                     <div class="w-full bg-slate-200 h-6 rounded-full overflow-hidden border border-slate-300 shadow-inner relative flex items-center">
                         <div id="hp-bar" class="bg-gradient-to-r from-red-500 via-orange-400 to-green-500 h-full w-full transition-all duration-500"></div>
-                        <span id="hp-text" class="absolute inset-0 flex items-center justify-center text-xs font-bold text-slate-800 drop-shadow-sm font-pixel">3 / 3</span>
+                        <span id="hp-text" class="absolute inset-0 flex items-center justify-center text-xs font-bold text-slate-800 drop-shadow-sm font-pixel">5 / 5</span>
                     </div>
                 </div>
             </div>
 
-            <!-- 中部: キャラクター対決 & 出題ビジュアル -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                 
-                <!-- 左側: 戦闘エリア (キャラのアニメーションとエフェクト) -->
                 <div class="md:col-span-4 bg-gradient-to-b from-blue-50 to-amber-50 rounded-2xl p-3 border border-slate-200 h-64 flex flex-col justify-between relative overflow-hidden">
                     
-                    <!-- 斬撃エフェクト -->
                     <div id="slash-effect" class="absolute inset-0 flex items-center justify-center z-20 pointer-events-none hidden">
                         <svg viewBox="0 0 100 100" class="w-32 h-32 slash text-yellow-400 fill-current">
                             <polygon points="50,10 60,40 90,50 60,60 50,90 40,60 10,50 40,40"/>
                         </svg>
                     </div>
 
-                    <!-- メッセージふきだし -->
-                    <div class="bg-white rounded-lg p-2 shadow-md border border-slate-200 text-xs text-slate-700 relative z-10 font-bold min-h-[48px] flex items-center">
-                        <p id="battle-dialogue">ぶんどキング「ワハハ！まずはこの問題だ。解けるかな？」</p>
+                    <div class="bg-white rounded-lg p-2 shadow-md border border-slate-200 text-xs text-slate-700 relative z-10 font-bold min-h-[52px] flex items-center">
+                        <p id="battle-dialogue">ぶんどキング「ワハハ！合体角度だ。計算できるかな？」</p>
                     </div>
 
-                    <!-- キャラクター同士の配置 -->
                     <div class="flex justify-between items-end px-2 h-28 relative">
-                        <!-- 三角じょうぎマン -->
                         <div id="hero-sprite" class="w-20 h-20 transition-all duration-300 animate-bounce-slow">
-                            <!-- SVG -->
                             <svg viewBox="0 0 100 100" class="w-full h-full">
                                 <circle cx="50" cy="35" r="20" fill="#ffddcc" stroke="#333" stroke-width="2"/>
                                 <rect x="30" y="20" width="40" height="8" fill="#1d4ed8" rx="2"/>
@@ -251,20 +210,16 @@
                                 <line x1="58" y1="75" x2="65" y2="92" stroke="#1e40af" stroke-width="5" stroke-linecap="round"/>
                                 <path d="M 30,92 C 30,92 35,90 38,95" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
                                 <path d="M 70,92 C 70,92 65,90 62,95" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
-                                <!-- 剣 -->
                                 <line x1="42" y1="58" x2="25" y2="65" stroke="#333" stroke-width="2"/>
                                 <polygon points="25,50 10,80 25,80" fill="#d7b58a" stroke="#b28a5b" stroke-width="1.5"/>
                                 <circle cx="20" cy="70" r="2.5" fill="#fff" stroke="#333" stroke-width="1"/>
-                                <!-- 盾 -->
                                 <line x1="58" y1="58" x2="72" y2="62" stroke="#333" stroke-width="2"/>
                                 <polygon points="70,55 90,55 80,75" fill="#d7b58a" stroke="#b28a5b" stroke-width="1.5"/>
                                 <circle cx="80" cy="61" r="2.5" fill="#fff" stroke="#333" stroke-width="1"/>
                             </svg>
                         </div>
 
-                        <!-- ぶんどキング -->
                         <div id="enemy-sprite" class="w-20 h-20 transition-all duration-300 animate-float-slow">
-                            <!-- SVG -->
                             <svg viewBox="0 0 100 100" class="w-full h-full">
                                 <path d="M 20,35 A 30,30 0 0,1 80,35 Z" fill="#fef08a" stroke="#eab308" stroke-width="3"/>
                                 <line x1="50" y1="35" x2="50" y2="5" stroke="#eab308" stroke-width="1.5"/>
@@ -289,15 +244,15 @@
                     </div>
                 </div>
 
-                <!-- 右側: 問題出題ビジュアル (分度器キャンバス等) -->
                 <div class="md:col-span-8 flex flex-col items-center justify-center p-3 border border-slate-200 rounded-2xl bg-slate-50 min-h-[260px] relative">
-                    <!-- 分度器表示用のCanvas。サイズを拡大して視認性を劇的にUP -->
-                    <div id="canvas-container" class="w-full max-w-[440px] aspect-[2/1] relative flex justify-center items-end">
-                        <canvas id="protractor-canvas" width="460" height="230" class="w-full h-full drop-shadow-md"></canvas>
+                    <button id="style-toggle" class="absolute top-2 right-2 bg-slate-200 hover:bg-slate-300 active:scale-95 text-[10px] text-slate-700 font-bold px-2 py-1 rounded shadow-xs z-10 transition-all">
+                        🎨 見た目: ダンボール
+                    </button>
+                    <div id="canvas-container" class="w-full max-w-[440px] aspect-[12/7] relative flex justify-center items-end mt-4">
+                        <canvas id="drill-canvas" width="480" height="280" class="w-full h-full drop-shadow-md"></canvas>
                     </div>
-                    <!-- テキスト問題エリア -->
                     <div id="question-text-box" class="w-full text-center mt-3 px-4">
-                        <p id="question-p" class="font-bold text-slate-800 text-base md:text-lg leading-relaxed">
+                        <p id="question-p" class="font-bold text-slate-800 text-sm md:text-base leading-relaxed">
                             ロード中...
                         </p>
                     </div>
@@ -305,39 +260,30 @@
 
             </div>
 
-            <!-- 下部: 回答エリア (選択肢ボタン) -->
             <div id="choices-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <!-- JavaScriptで動的に生成 -->
-                <button class="choice-btn py-3 px-4 bg-blue-50 hover:bg-blue-100 text-blue-900 border-2 border-blue-200 rounded-2xl font-bold transition-all text-sm md:text-base shadow-sm">
-                    選択肢1
-                </button>
-            </div>
+                </div>
 
-            <!-- フィードバックモーダル/ポップアップ (正解・不正解表示) -->
             <div id="feedback-panel" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50">
                 <div class="bg-white rounded-3xl p-6 shadow-2xl border-4 border-blue-400 max-w-sm w-full text-center space-y-4 animate-bounce-slow">
                     <div id="feedback-icon" class="text-6xl">🎉</div>
                     <h3 id="feedback-title" class="text-2xl font-black text-slate-800 font-pixel">せいかい！</h3>
-                    <p id="feedback-desc" class="text-slate-600 font-medium">素晴らしい！分度器の基本をマスターしているね！</p>
+                    <p id="feedback-desc" class="text-slate-600 font-medium text-sm md:text-base">素晴らしい！バッチリ計算できたね！</p>
                     <button id="next-btn" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md font-pixel">
-                        つぎへすすむ！
+                        つぎの問題へすすむ！
                     </button>
                 </div>
             </div>
 
         </div>
 
-        <!-- ================= スクリーン3: エンディングストーリー ================= -->
         <div id="screen-ending" class="w-full bg-white rounded-3xl p-6 shadow-xl border-4 border-amber-400 flex flex-col items-center space-y-6 hidden">
-            <h2 class="text-3xl font-black text-amber-500 font-pixel">おどろきの結末…！</h2>
+            <h2 class="text-3xl font-black text-amber-500 font-pixel animate-bounce">完全クリア！おめでとう！</h2>
             
             <div class="cardboard-bg p-4 rounded-2xl w-full max-w-md flex flex-col space-y-4">
                 <div class="flex items-center space-x-4 bg-white/80 p-3 rounded-xl border border-amber-200">
-                    <!-- ぶんどキング顔 -->
                     <div class="w-16 h-16 shrink-0">
                         <svg viewBox="0 0 100 100" class="w-full h-full">
                             <circle cx="50" cy="50" r="40" fill="#ffddcc" stroke="#333" stroke-width="3"/>
-                            <!-- 涙を流すキングの目 -->
                             <path d="M 30,45 Q 35,42 40,45" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
                             <path d="M 60,45 Q 65,42 70,45" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
                             <circle cx="35" cy="55" r="4" fill="#60a5fa" class="animate-pulse"/>
@@ -347,16 +293,15 @@
                     </div>
                     <div class="text-xs md:text-sm">
                         <span class="font-bold text-red-600">ぶんどキング</span>
-                        <p class="mt-1 font-semibold text-slate-800">「ぐわぁぁ！やられた…！しかし…お、お前が胸にかかげているその黄金の三角マークは…まさか…！」</p>
+                        <p class="mt-1 font-semibold text-slate-800">「ぐわぁぁ！合体定規のナゾをすべて解くとは…！キミの計算力、本物だ！」</p>
                     </div>
                 </div>
 
                 <div class="flex items-center space-x-4 bg-white/80 p-3 rounded-xl border border-amber-200">
                     <div class="text-xs md:text-sm text-right flex-grow">
                         <span class="font-bold text-blue-600">三角じょうぎマン</span>
-                        <p class="mt-1 font-semibold text-slate-800">「な、なんだって…？このバンダナのマークは、じょうぎ星のロイヤルマーク（王家の紋章）…</p>
+                        <p class="mt-1 font-semibold text-slate-800">「やったね！角度をあわせる『たし算』、直線や1周から引く『ひき算』、ぜんぶカンペキだ！」</p>
                     </div>
-                    <!-- 三角じょうぎマン顔 -->
                     <div class="w-16 h-16 shrink-0">
                         <svg viewBox="0 0 100 100" class="w-full h-full">
                             <circle cx="50" cy="50" r="40" fill="#ffddcc" stroke="#333" stroke-width="3"/>
@@ -368,14 +313,14 @@
                 </div>
 
                 <div class="bg-amber-100 p-3 rounded-xl border border-amber-300 text-xs md:text-sm leading-relaxed font-bold text-amber-900 text-center">
-                    ぶんどキング「お前はじょうぎ星で行方不明（ゆくえふめい）になった、私の愛する王子…ジョウギルだ！」<br>
-                    三角じょうぎマン「ええっ！？お、オヤジ！？…まさか角度の学習が苦手な地球の子供たちのために、わざと悪役を演じていたのか！？」
+                    ぶんどキング「これで角度の宿題は完ペキだな！さすがは我が愛するジョウギル王子…」<br>
+                    三角じょうぎマン「オ、オヤジ〜！算数シートの問題も、これでばっちり100点満点だ！」
                 </div>
             </div>
 
             <div class="text-center space-y-2">
-                <p class="text-lg font-bold text-slate-800">🎉 全問正解おめでとう！ 🎉</p>
-                <p class="text-sm text-slate-600">キミのおかげで、三角じょうぎマンとぶんどキングは感動の親子再会（さいかい）をはたした！角度のちしきはこれでバッチリだね！</p>
+                <p class="text-lg font-bold text-slate-800">🎉 角度の計算をマスターした！ 🎉</p>
+                <p class="text-sm text-slate-600">合体三角定規の角度のヒミツをぜんぶ解き明かしたぞ！これからも算数をたのしく学ぼう！</p>
             </div>
 
             <button id="restart-btn" class="w-full max-w-sm py-4 bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold rounded-2xl shadow-lg border-b-8 border-blue-900 active:border-b-2 active:translate-y-1 transition-all font-pixel">
@@ -385,13 +330,11 @@
 
     </main>
 
-    <!-- フッター -->
     <footer class="bg-slate-100 border-t border-slate-200 py-3 text-center text-xs text-slate-500 z-10">
         <p>© 2026 三角じょうぎマン教育委員会 & ぶんどキング帝国</p>
-        <p class="mt-1">※このゲームは、小学4年生の算数「角の大きさ」の学習を応援する、三角じょうぎマン公式WEB教材です。</p>
+        <p class="mt-1">※小学4年生算数の角度「三角定規の組み合わせ」の学習を応援する知育ゲームです。</p>
     </footer>
 
-    <!-- JSロジック -->
     <script>
         // --- サウンドシステム (Web Audio API を使用したレトロゲーム音源) ---
         class SoundEffects {
@@ -433,7 +376,6 @@
                 }, delay * 1000);
             }
 
-            // 効果音：正解
             playCorrect() {
                 this.playTone(523.25, 'sine', 0.1, 0); // ド
                 this.playTone(659.25, 'sine', 0.15, 0.08); // ミ
@@ -441,20 +383,17 @@
                 this.playTone(1046.50, 'sine', 0.3, 0.24); // 高いド
             }
 
-            // 効果音：不正解
             playIncorrect() {
                 this.playTone(293.66, 'sawtooth', 0.2, 0); // レ
-                this.playTone(277.18, 'sawtooth', 0.3, 0.15); // C# (不協和音気味に下がる)
+                this.playTone(277.18, 'sawtooth', 0.3, 0.15); // C# (下がってはずれる)
             }
 
-            // 効果音：攻撃（アタック）
             playAttack() {
                 this.playTone(150, 'triangle', 0.05, 0);
                 this.playTone(300, 'sawtooth', 0.1, 0.02);
                 this.playTone(600, 'sawtooth', 0.15, 0.05);
             }
 
-            // 効果音：ファンファーレ (クリア時)
             playFanfare() {
                 const notes = [523.25, 523.25, 523.25, 523.25, 659.25, 587.33, 659.25, 783.99];
                 const delays = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.85];
@@ -464,7 +403,6 @@
                 });
             }
 
-            // ピコピコBGM風メロディ（ループ演奏）
             startBgm() {
                 if (this.muted) return;
                 this.init();
@@ -492,7 +430,6 @@
         const sounds = new SoundEffects();
         let bgmOn = true;
 
-        // BGM切り替えボタン
         document.getElementById('bgm-toggle').addEventListener('click', () => {
             bgmOn = !bgmOn;
             sounds.muted = !bgmOn;
@@ -507,408 +444,356 @@
         });
 
 
-        // --- クイズ定義 ---
-        // 第1戦: 目盛り知識、第2戦: 分度器角度(動的ランダム生成)、第3戦: 角度の名前
-        const quizData = [
-            // [第1戦: 分度器のきそちしき]
-            {
-                stage: 1,
-                title: "第1戦：めもりのナゾ",
-                dialogue: "ぶんどキング「まずは基本のしゅぎょうだ！分度器のめもりを読めるかな？」",
-                question: "分度器の「いちばん小さな１めもり」は、何度をあらわしているかな？",
-                choices: ["1度 (1°)", "5度 (5°)", "10度 (10°)", "90度 (90°)"],
-                correctIndex: 0,
-                desc: "せいかい！分度器のいちばん小さな1つのめもりは「1度(1°)」だよ！これを使って細かい角度もバッチリはかれるんだ。"
-            },
-            {
-                stage: 1,
-                title: "第1戦：めもりのナゾ",
-                dialogue: "ぶんどキング「ふっふっふ、なかなかのちしき。では、分度器では何度まではかれるのだ？」",
-                question: "ふつうの半円の分度器で、はかることができる「いちばん大きい角度」は何度かな？",
-                choices: ["90度", "120度", "180度", "360度"],
-                correctIndex: 2,
-                desc: "大せいかい！ふつうの分度器は、左の「0度」から右の「180度」まではかることができるよ！"
-            },
+        // --- ゲーム定数 ＆ キャンバス描画 ---
+        const canvas = document.getElementById('drill-canvas');
+        const ctx = canvas.getContext('2d');
+        let currentStyle = 'cardboard'; // 'cardboard' or 'plastic'
 
-            // [第2戦: 角度読み取り（ランダムで角度が設定されます）]
-            {
-                stage: 2,
-                title: "第2戦：角度を読みとれ！",
-                dialogue: "ぶんどキング「いよいよ本番！オレ様がうつし出したこの角度をピタリと当ててみよ！」",
-                question: "",
-                angle: 45, // 動的に置き換えられます
-                choices: [],
-                correctIndex: 0,
-                desc: ""
-            },
-            {
-                stage: 2,
-                title: "第2戦：角度を読みとれ！",
-                dialogue: "ぶんどキング「やるな！では、この大きな口のように開いた角度はどうだ！？」",
-                question: "",
-                angle: 120, // 動的に置き換えられます
-                choices: [],
-                correctIndex: 0,
-                desc: ""
-            },
-
-            // [第3戦: 角度の名前]
-            {
-                stage: 3,
-                title: "第3戦：角度の名前マスター",
-                dialogue: "ぶんどキング「いよいよ最終決戦だ！角度の特別な呼び方について答えられるか！？」",
-                question: "三角じょうぎの角にもかならずある「90度」の角度のことを、特別な名前で何と呼ぶかな？",
-                choices: ["鋭角 (えいかく)", "鈍角 (どんかく)", "直角 (ちょっかく)", "平角 (へいかく)"],
-                correctIndex: 2,
-                desc: "せいかい！90度の角度は「直角（ちょっかく）」と呼ぶんだ！三角じょうぎはどちらのタイプにも必ず1つ直角があるよ！"
-            },
-            {
-                stage: 3,
-                title: "第3戦：角度の名前マスター",
-                dialogue: "ぶんどキング「ぬおお！では、分度器いっぱいの『180度』は何回転というかな！？」",
-                question: "180度の角度は、ぐるっと回る回転（かいてん）の言い方で何とあらわすかな？",
-                choices: ["4分の1回転", "半回転 (半分まわる)", "1回転", "2回転"],
-                correctIndex: 1,
-                desc: "見事だ！180度は「半回転（はんかいてん）」だ。まっすぐな一本の線（直線）になるよ！"
-            },
-            {
-                stage: 3,
-                title: "第3戦：角度の名前マスター",
-                dialogue: "ぶんどキング「これが最後の切り札！では、ぐるりと一周する『360度』は何回転だ！？」",
-                question: "360度の角度は、何回転というかな？",
-                choices: ["半回転", "1回転 (1周まわる)", "2回転", "360回転"],
-                correctIndex: 1,
-                desc: "大・大・大せいかい！360度はぐるりと一周して元に戻る「1回転」だね！"
-            }
-        ];
-
-
-        // --- 動的にランダムな角度問題を生成する処理 ---
-        function generateRandomAngleQuizzes() {
-            // 小学4年生が親しみやすい角度の候補
-            const leftAngleOptions = [30, 45, 60, 90, 135];
-            const rightAngleOptions = [45, 120, 135, 150];
+        // ズレを100%排除する絶対定規描画システム（青テープ線を削除してダンボール色のみに！）
+        function drawSetSquareAbsolute(type, vertexIndex, cx, cy, startAngle, sweepDirection = 1) {
+            let sweepAngleDeg = 0;
+            let len1 = 0;
+            let len2 = 0;
             
-            // ランダムに選定
-            const angle1 = leftAngleOptions[Math.floor(Math.random() * leftAngleOptions.length)];
-            let angle2 = rightAngleOptions[Math.floor(Math.random() * rightAngleOptions.length)];
-            while (angle1 === angle2) {
-                angle2 = rightAngleOptions[Math.floor(Math.random() * rightAngleOptions.length)];
+            if (type === 'iso') {
+                if (vertexIndex === 0) { // 90°の角
+                    sweepAngleDeg = 90;
+                    len1 = 120;
+                    len2 = 120;
+                } else { // 45°の角
+                    sweepAngleDeg = 45;
+                    len1 = (vertexIndex === 1) ? 120 : 120 * Math.sqrt(2);
+                    len2 = (vertexIndex === 1) ? 120 * Math.sqrt(2) : 120;
+                }
+            } else { // scal (30-60-90)
+                if (vertexIndex === 0) { // 90°の角
+                    sweepAngleDeg = 90;
+                    len1 = 110; // 短い辺 (60°方向)
+                    len2 = 190.52; // 長い辺 (30°方向, 110 * √3)
+                } else if (vertexIndex === 1) { // 30°の角
+                    sweepAngleDeg = 30;
+                    len1 = 220; // 斜辺 (60°方向)
+                    len2 = 190.52; // 長い辺 (90°方向)
+                } else { // 60°の角
+                    sweepAngleDeg = 60;
+                    len1 = 110; // 短い辺 (90°方向)
+                    len2 = 220; // 斜辺 (30°方向)
+                }
             }
-
-            // 1問目（左から測定、インデックス2）
-            quizData[2].angle = angle1;
-            quizData[2].question = `半透明（はんとうめい）の色のついた角の大きさは何度かな？<br><span class="inline-block mt-2 text-xs bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded-full border border-blue-200">★左がわの「0」のめもり（そとがわ）から、はかろう！</span>`;
-            quizData[2].choices = generateChoices(angle1);
-            quizData[2].correctIndex = quizData[2].choices.indexOf(`${angle1}度`);
-            quizData[2].desc = `せいかい！これは ${angle1}度 だ。じょうぎをピタッとあわせて、左の「0」から数字が増える「そと側のめもり」を読んでいこう！`;
-
-            // 2問目（右から測定、インデックス3）
-            quizData[3].angle = angle2;
-            quizData[3].question = `半透明（はんとうめい）の色のついた角の大きさは何度かな？<br><span class="inline-block mt-2 text-xs bg-red-100 text-red-800 font-bold px-3 py-1 rounded-full border border-red-200">★右がわの「0」のめもり（うちがわ）から、はかろう！</span>`;
-            quizData[3].choices = generateChoices(angle2);
-            quizData[3].correctIndex = quizData[3].choices.indexOf(`${angle2}度`);
-            quizData[3].desc = `大せいかい！${angle2}度 だ。右の「0」から数字が増える「うち側のめもり」をしっかり読めたね！すごい！`;
+            
+            const sweepAngleRad = (sweepAngleDeg * Math.PI) / 180 * sweepDirection;
+            const endAngle = startAngle + sweepAngleRad;
+            
+            // 各先端頂点の座標計算
+            const x1 = cx + Math.cos(startAngle) * len1;
+            const y1 = cy + Math.sin(startAngle) * len1;
+            const x2 = cx + Math.cos(endAngle) * len2;
+            const y2 = cy + Math.sin(endAngle) * len2;
+            
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.closePath();
+            
+            // スタイル適用
+            if (currentStyle === 'cardboard') {
+                // シンプルなダンボールスキン（青いテープを排除し、完全な茶色に！）
+                ctx.fillStyle = '#d7b58a';
+                ctx.strokeStyle = '#a17849'; // 少し濃い茶色
+                ctx.lineWidth = 4;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.12)';
+                ctx.shadowBlur = 4;
+                ctx.shadowOffsetY = 3;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetY = 0;
+                ctx.stroke();
+            } else {
+                // カラフルプラスチックスキン
+                ctx.fillStyle = type === 'iso' ? 'rgba(34, 211, 238, 0.55)' : 'rgba(251, 191, 36, 0.55)';
+                ctx.strokeStyle = type === 'iso' ? '#0891b2' : '#d97706';
+                ctx.lineWidth = 3;
+                ctx.fill();
+                ctx.stroke();
+            }
+            
+            // 内側のくり抜き覗き穴
+            const centroidX = (cx + x1 + x2) / 3;
+            const centroidY = (cy + y1 + y2) / 3;
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(centroidX, centroidY, 13, 0, Math.PI * 2);
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fill();
+            ctx.restore();
+            
+            ctx.beginPath();
+            ctx.arc(centroidX, centroidY, 13, 0, Math.PI * 2);
+            ctx.lineWidth = currentStyle === 'cardboard' ? 2 : 1.5;
+            ctx.stroke();
+            
+            // 辺1（中心からx1, y1のライン）に沿って目盛り線を描く
+            ctx.save();
+            ctx.strokeStyle = currentStyle === 'cardboard' ? '#78542c' : 'rgba(0,0,0,0.35)';
+            ctx.lineWidth = 1;
+            
+            const step = 8;
+            for (let d = step; d < len1 - 5; d += step) {
+                const isMajor = (Math.round(d / step) % 5 === 0);
+                const tickL = isMajor ? 7 : 4;
+                const tx = cx + Math.cos(startAngle) * d;
+                const ty = cy + Math.sin(startAngle) * d;
+                const perpAngle = startAngle + (Math.PI / 2) * sweepDirection;
+                ctx.beginPath();
+                ctx.moveTo(tx, ty);
+                ctx.lineTo(tx + Math.cos(perpAngle) * tickL, ty + Math.sin(perpAngle) * tickL);
+                ctx.stroke();
+            }
+            ctx.restore();
+            ctx.restore();
+            
+            return {
+                startAngle: startAngle,
+                endAngle: endAngle,
+                sweepAngleRad: sweepAngleRad,
+                sweepAngleDeg: sweepAngleDeg
+            };
         }
 
-        // 正解の角度の周囲から、選択肢4つを自動作成する関数
-        function generateChoices(correctAngle) {
-            const possibleAngles = [30, 45, 60, 90, 120, 135, 150, 180];
-            const choicesSet = new Set();
-            choicesSet.add(correctAngle);
+        // 角度円弧を描く共通処理
+        function drawAngleArc(startAngle, endAngle, label, radius = 55, cx = 240, cy = 180, forceAnticlockwise = false) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, radius, startAngle, endAngle, forceAnticlockwise);
+            ctx.lineTo(cx, cy);
+            ctx.closePath();
 
-            const filteredDummies = possibleAngles.filter(a => a !== correctAngle);
-            // シャッフル
-            filteredDummies.sort(() => Math.random() - 0.5);
+            ctx.fillStyle = 'rgba(239, 68, 68, 0.35)';
+            ctx.fill();
 
-            for (let dummy of filteredDummies) {
-                if (choicesSet.size < 4) {
-                    choicesSet.add(dummy);
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, startAngle, endAngle, forceAnticlockwise);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = '#ef4444';
+            ctx.stroke();
+
+            // ラベル文字「あ」「い」の位置計算
+            let midAngle;
+            if (forceAnticlockwise) {
+                let diff = endAngle - startAngle;
+                if (diff > 0) diff -= Math.PI * 2;
+                midAngle = startAngle + diff / 2;
+            } else {
+                midAngle = startAngle + (endAngle - startAngle) / 2;
+            }
+            
+            const textDist = radius + 20;
+            const tx = cx + Math.cos(midAngle) * textDist;
+            const ty = cy + Math.sin(midAngle) * textDist;
+
+            ctx.font = 'bold 22px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.shadowColor = 'white';
+            ctx.shadowBlur = 6;
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = 'white';
+            ctx.strokeText(label, tx, ty);
+            ctx.fillStyle = '#ef4444';
+            ctx.fillText(label, tx, ty);
+
+            ctx.restore();
+        }
+
+
+        // --- クイズシステム（シンプル選択式） ---
+        let currentProblem = null;
+        let hp = 5; // キングの最大HP
+        const maxHp = 5;
+
+        // 問題タイプ別の定規・角度設定（ズレ防止ドッキングシステム）
+        function generateProblem() {
+            const types = ['ADD', 'SUB180', 'SUB360'];
+            let chosenType = types[Math.floor(Math.random() * types.length)];
+
+            // 定規の角候補
+            const angleAOptions = [
+                { index: 0, val: 90 },
+                { index: 1, val: 45 }
+            ];
+            const angleBOptions = [
+                { index: 0, val: 90 },
+                { index: 1, val: 30 },
+                { index: 2, val: 60 }
+            ];
+
+            let a = angleAOptions[Math.floor(Math.random() * angleAOptions.length)];
+            let b = angleBOptions[Math.floor(Math.random() * angleBOptions.length)];
+
+            // SUB180 の場合、合計が180度以上だと残りの角度が0以下になるので、合計が180度未満になるように再選定する
+            if (chosenType === 'SUB180') {
+                let attempts = 0;
+                while (a.val + b.val >= 180 && attempts < 20) {
+                    a = angleAOptions[Math.floor(Math.random() * angleAOptions.length)];
+                    b = angleBOptions[Math.floor(Math.random() * angleBOptions.length)];
+                    attempts++;
+                }
+                if (a.val + b.val >= 180) {
+                    chosenType = 'ADD'; // フォールバック
                 }
             }
 
-            // 不足した場合に補う
-            while (choicesSet.size < 4) {
-                const randomOffset = (Math.floor(Math.random() * 12) + 1) * 15;
-                if (randomOffset <= 180) {
-                    choicesSet.add(randomOffset);
-                }
+            let problem = {
+                type: chosenType,
+                angleA: a.val,
+                angleB: b.val,
+                indexA: a.index,
+                indexB: b.index,
+                label: ['あ', 'い', 'う', 'え'][Math.floor(Math.random() * 4)],
+                ans: 0,
+                text: ""
+            };
+
+            if (chosenType === 'ADD') {
+                problem.ans = a.val + b.val;
+                problem.text = `図は、三角じょうぎの <b>${a.val}度</b> の角と <b>${b.val}度</b> の角をぴったりあわせたものです。<br>赤色の <b>「${problem.label}」</b> の角度は何度かな？`;
+            } else if (chosenType === 'SUB180') {
+                problem.ans = 180 - (a.val + b.val);
+                problem.text = `直線（平らな線＝<b>180度</b>）の上に、三角じょうぎの <b>${a.val}度</b> の角と <b>${b.val}度</b> の角をぴったりくっつけておきました。<br>赤色の <b>「${problem.label}」</b> の角度は何度かな？`;
+            } else if (chosenType === 'SUB360') {
+                problem.ans = 360 - (a.val + b.val);
+                problem.text = `1つの点のまわりに、三角じょうぎの <b>${a.val}度</b> の角と <b>${b.val}度</b> の角をぴったりあわせました。<br>1周 <b>360度</b> から定規の角をひいた、外がわの赤色の <b>「${problem.label}」</b> の角度は何度かな？`;
             }
 
-            // 昇順に並べて「〜度」テキストにする
-            return Array.from(choicesSet)
-                .sort((a, b) => a - b)
-                .map(angle => `${angle}度`);
+            currentProblem = problem;
+            renderProblem();
         }
 
+        function renderProblem() {
+            const p = currentProblem;
+            document.getElementById('question-p').innerHTML = p.text;
 
-        // --- ゲーム状態変数 ---
-        let currentQuizIndex = 0;
-        let hp = 3; // ぶんどキングのHP
-        const totalStages = 3;
+            // Canvas再描画
+            drawScene();
 
+            // 4択ボタンの自動生成
+            generateChoices();
+        }
 
-        // --- DOM要素 ---
-        const protractorCanvas = document.getElementById('protractor-canvas');
-        const ctx = protractorCanvas.getContext('2d');
-        const hpBar = document.getElementById('hp-bar');
-        const hpText = document.getElementById('hp-text');
-        const stageBadge = document.getElementById('stage-badge');
-        const battleDialogue = document.getElementById('battle-dialogue');
-        const questionP = document.getElementById('question-p');
-        const choicesContainer = document.getElementById('choices-container');
-        
-        const feedbackPanel = document.getElementById('feedback-panel');
-        const feedbackIcon = document.getElementById('feedback-icon');
-        const feedbackTitle = document.getElementById('feedback-title');
-        const feedbackDesc = document.getElementById('feedback-desc');
-        const nextBtn = document.getElementById('next-btn');
+        // 定規と赤い扇形の座標を完全に1対1で重ね合わせてズレを解消！
+        function drawScene() {
+            const p = currentProblem;
+            if (!p) return;
 
-        const heroSprite = document.getElementById('hero-sprite');
-        const enemySprite = document.getElementById('enemy-sprite');
-        const slashEffect = document.getElementById('slash-effect');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // スクリーン
-        const screenIntro = document.getElementById('screen-intro');
-        const screenGame = document.getElementById('screen-game');
-        const screenEnding = document.getElementById('screen-ending');
+            const cx = 240;
+            const cy = 180;
 
-        // ボタン
-        const startBtn = document.getElementById('start-btn');
-        const restartBtn = document.getElementById('restart-btn');
+            if (p.type === 'ADD') {
+                // 定規A(iso)を角度0から反時計回りへ
+                const rA = drawSetSquareAbsolute('iso', p.indexA, cx, cy, 0, -1);
+                // 定規B(scal)を角度0から時計回りへ
+                const rB = drawSetSquareAbsolute('scal', p.indexB, cx, cy, 0, 1);
 
+                // 赤い扇形を、定規Aの端から定規B의端へ描く（時計回り）
+                drawAngleArc(rA.endAngle, rB.endAngle, p.label, 56, cx, cy, false);
 
-        // --- 分度器を描画する関数 ---
-        // highlightedAngle: 半透明で色を塗る角度
-        // startFromRight: 右から測るか(true = うちがわ基準)、左からか(false = そとがわ基準)
-        function drawProtractor(highlightedAngle = 0, startFromRight = false) {
-            const w = protractorCanvas.width;
-            const h = protractorCanvas.height;
-            const cx = w / 2;
-            const cy = h - 15; // 下部余白
-            const r = h - 25;  // 外周半径
-
-            // 画面クリア
-            ctx.clearRect(0, 0, w, h);
-
-            // 1. 半透明の色のついた円弧（角度を表す扇形）の描画（バグを完全修正！）
-            if (highlightedAngle > 0) {
+            } else if (p.type === 'SUB180') {
+                // 直線を描く
                 ctx.save();
                 ctx.beginPath();
-                ctx.moveTo(cx, cy);
-                
-                // Canvasの座標系（上半分はy座標が負。角度0〜-PI）に完全対応
-                let startRad, endRad, anticlockwise;
-                if (startFromRight) {
-                    // 右基準 (0ラジアン) から反時計回りに上へ向かう
-                    startRad = 0;
-                    endRad = - (highlightedAngle * Math.PI) / 180;
-                    anticlockwise = true;
-                } else {
-                    // 左基準 (-Math.PIラジアン) から時計回りに上へ向かう
-                    startRad = -Math.PI;
-                    endRad = -Math.PI + (highlightedAngle * Math.PI) / 180;
-                    anticlockwise = false;
-                }
-
-                // 正しい角度範囲で円弧を描く
-                ctx.arc(cx, cy, r - 5, startRad, endRad, anticlockwise);
-                ctx.lineTo(cx, cy);
-                ctx.closePath();
-                
-                // 綺麗なグラデーションカラー
-                const grad = ctx.createRadialGradient(cx, cy, 20, cx, cy, r);
-                grad.addColorStop(0, 'rgba(239, 68, 68, 0.65)');  // 中心：濃い赤
-                grad.addColorStop(0.7, 'rgba(245, 158, 11, 0.65)'); // 中間：オレンジ
-                grad.addColorStop(1, 'rgba(251, 191, 36, 0.25)');   // 外枠：明るい黄色
-                ctx.fillStyle = grad;
-                ctx.fill();
-
-                // 境界の赤い線
-                ctx.lineWidth = 3;
-                ctx.strokeStyle = '#ef4444';
+                ctx.moveTo(40, cy);
+                ctx.lineTo(440, cy);
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = '#475569';
                 ctx.stroke();
-
-                // 角度をはっきりと示す赤い針
-                ctx.beginPath();
-                ctx.moveTo(cx, cy);
-                ctx.lineTo(cx + Math.cos(endRad) * (r - 2), cy + Math.sin(endRad) * (r - 2));
-                ctx.lineWidth = 2.5;
-                ctx.strokeStyle = '#ef4444';
-                ctx.stroke();
-
                 ctx.restore();
+
+                // 直線の右(0度)を基準に、定規Aを配置
+                const rA = drawSetSquareAbsolute('iso', p.indexA, cx, cy, 0, -1);
+                // 定規Aの端に繋げて定規Bを配置
+                const rB = drawSetSquareAbsolute('scal', p.indexB, cx, cy, rA.endAngle, -1);
+
+                // 直線の左端(-180度 ＝ -Math.PI)から、定規Bの端までを赤い扇形で覆う（時計回り）
+                drawAngleArc(-Math.PI, rB.endAngle, p.label, 62, cx, cy, false);
+
+            } else if (p.type === 'SUB360') {
+                // ADDと同じく、ぴったり重なった2枚の定規を描画
+                const rA = drawSetSquareAbsolute('iso', p.indexA, cx, cy, 0, -1);
+                const rB = drawSetSquareAbsolute('scal', p.indexB, cx, cy, 0, 1);
+
+                // 定規Bの端から定規Aの端まで、定規を避けて外側をぐるっと1周覆う（反時計回り）
+                drawAngleArc(rB.endAngle, rA.endAngle, p.label, 48, cx, cy, true);
             }
-
-            // 2. 分度器の本体（半透明のプラスチック半円盤）を描画
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(cx, cy, r, Math.PI, 0, false);
-            ctx.lineTo(cx, cy);
-            ctx.closePath();
-            ctx.fillStyle = 'rgba(224, 242, 254, 0.75)'; // さわやかな半透明水色
-            ctx.fill();
-            ctx.lineWidth = 2.5;
-            ctx.strokeStyle = '#2563eb';
-            ctx.stroke();
-
-            // 内側の小さな半円（本物の分度器の真ん中にある穴）
-            ctx.beginPath();
-            ctx.arc(cx, cy, r * 0.32, Math.PI, 0, false);
-            ctx.lineTo(cx, cy);
-            ctx.closePath();
-            ctx.fillStyle = '#ffffff';
-            ctx.fill();
-            ctx.stroke();
-            ctx.restore();
-
-            // 3. 目盛り線の描画
-            ctx.save();
-            ctx.strokeStyle = '#1e3a8a';
-            for (let i = 0; i <= 180; i++) {
-                const rad = (i * Math.PI) / 180;
-                const isMajor = i % 10 === 0;
-                const isMedium = i % 5 === 0 && !isMajor;
-                
-                let startDist = r - 10;
-                if (isMajor) startDist = r - 18;
-                else if (isMedium) startDist = r - 14;
-
-                const x1 = cx + Math.cos(rad) * r;
-                const y1 = cy - Math.sin(rad) * r;
-                const x2 = cx + Math.cos(rad) * startDist;
-                const y2 = cy - Math.sin(rad) * startDist;
-
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.lineWidth = isMajor ? 1.5 : (isMedium ? 1 : 0.5);
-                ctx.stroke();
-
-                // 4. 数字の描画 (10度ごと) - 重ならないように二重にする
-                if (isMajor && i > 0 && i < 180) {
-                    ctx.fillStyle = '#1e3a8a';
-                    ctx.font = 'bold 10px sans-serif';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-
-                    // そと側の数字（左端の「0」から右に向かってふえる）
-                    const distTextOuter = r - 26; 
-                    const txOuter = cx - Math.cos(rad) * distTextOuter;
-                    const tyOuter = cy - Math.sin(rad) * distTextOuter;
-                    ctx.fillText(i.toString(), txOuter, tyOuter);
-
-                    // うち側の数字（右端の「0」から左に向かってふえる） - 距離をしっかり離す
-                    const distTextInner = r - 48; 
-                    const txInner = cx + Math.cos(rad) * distTextInner;
-                    const tyInner = cy - Math.sin(rad) * distTextInner;
-                    ctx.fillText(i.toString(), txInner, tyInner);
-                }
-            }
-
-            // 左右はしっこの「0」と「180」の描画
-            ctx.fillStyle = '#1e3a8a';
-            ctx.font = 'bold 10px sans-serif';
-            ctx.textAlign = 'center';
-            // 左側
-            ctx.fillText("0", cx - r + 26, cy - 8);     // そと側
-            ctx.fillText("180", cx - r + 48, cy - 8);   // うち側
-            // 右側
-            ctx.fillText("180", cx + r - 26, cy - 8);   // そと側
-            ctx.fillText("0", cx + r - 48, cy - 8);     // うち側
-
-            // 真ん中の赤い十字マーク
-            ctx.strokeStyle = '#ef4444';
-            ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.moveTo(cx - 10, cy);
-            ctx.lineTo(cx + 10, cy);
-            ctx.moveTo(cx, cy - 10);
-            ctx.lineTo(cx, cy);
-            ctx.stroke();
-
-            ctx.restore();
         }
 
+        // 選択肢のシャッフル・生成
+        function generateChoices() {
+            const correctAns = currentProblem.ans;
+            let choicesSet = new Set();
+            choicesSet.add(correctAns);
 
-        // --- ゲーム開始初期化 ---
-        startBtn.addEventListener('click', () => {
-            if (bgmOn) {
-                sounds.startBgm();
-            }
-            screenIntro.classList.add('hidden');
-            screenGame.classList.remove('hidden');
-            
-            // ランダムクイズをここで自動作成
-            generateRandomAngleQuizzes();
-            
-            loadQuiz(0);
-        });
+            const candidates = [30, 45, 60, 75, 90, 105, 120, 135, 150, 180, 210, 225, 240, 255, 270, 285, 300, 315];
+            const filtered = candidates.filter(c => c !== correctAns);
+            filtered.sort(() => Math.random() - 0.5);
 
-        // --- クイズ読み込み関数 ---
-        function loadQuiz(index) {
-            currentQuizIndex = index;
-            const currentQuiz = quizData[index];
-
-            // ステージバッジの更新
-            stageBadge.textContent = currentQuiz.title;
-
-            // ぶんどキングセリフ
-            battleDialogue.textContent = currentQuiz.dialogue;
-
-            // 問題テキスト
-            questionP.innerHTML = currentQuiz.question;
-
-            // 分度器描画
-            if (currentQuiz.angle) {
-                // 第2戦の角度問題のとき
-                const rightHand = index === 3; // インデックス3（4問目）は右から、インデックス2（3問目）は左から
-                drawProtractor(currentQuiz.angle, rightHand);
-                document.getElementById('canvas-container').style.opacity = '1';
-            } else {
-                // きそちしき問題のとき
-                drawProtractor(0);
-                document.getElementById('canvas-container').style.opacity = '0.4';
+            for (let val of filtered) {
+                if (choicesSet.size < 4) {
+                    choicesSet.add(val);
+                }
             }
 
-            // 選択肢ボタンの生成
-            choicesContainer.innerHTML = '';
-            currentQuiz.choices.forEach((choice, idx) => {
+            // 4つの数値を配列にする
+            const choicesArray = Array.from(choicesSet);
+            
+            // 選択肢の表示位置自体を完全にランダムにシャッフルする
+            choicesArray.sort(() => Math.random() - 0.5);
+
+            const container = document.getElementById('choices-container');
+            container.innerHTML = '';
+
+            choicesArray.forEach((val, idx) => {
+                const label = ["A", "B", "C", "D"][idx];
                 const btn = document.createElement('button');
                 btn.className = "choice-btn py-3 px-4 bg-blue-50 hover:bg-blue-100 active:scale-95 text-blue-900 border-2 border-blue-200 rounded-2xl font-bold transition-all text-sm md:text-base text-left flex items-center justify-between shadow-sm hover:border-blue-400";
-                
-                // えらぶボタンの記号(A, B, C, D)
-                const label = ["A", "B", "C", "D"][idx];
                 btn.innerHTML = `
                     <span class="flex items-center space-x-3">
                         <span class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center font-pixel text-xs shrink-0">${label}</span>
-                        <span>${choice}</span>
+                        <span>${val} 度 (° )</span>
                     </span>
                     <span class="text-blue-300">▶</span>
                 `;
-
-                btn.addEventListener('click', () => checkAnswer(idx));
-                choicesContainer.appendChild(btn);
+                // 値を直接渡して、厳密に比較できるようにする
+                btn.addEventListener('click', () => checkAnswer(val));
+                container.appendChild(btn);
             });
         }
 
 
         // --- 回答チェック ---
-        function checkAnswer(selectedIndex) {
-            const currentQuiz = quizData[currentQuizIndex];
-            const isCorrect = selectedIndex === currentQuiz.correctIndex;
+        function checkAnswer(selectedVal) {
+            const p = currentProblem;
+            // 数値同士を厳密に比較（バグ原因だった正誤判定を完全修正）
+            const isCorrect = (selectedVal === p.ans);
+
+            const heroSprite = document.getElementById('hero-sprite');
+            const enemySprite = document.getElementById('enemy-sprite');
+            const slashEffect = document.getElementById('slash-effect');
 
             if (isCorrect) {
                 sounds.playCorrect();
-                
-                // キャラクターのアニメーション（攻撃とダメージ）
+
+                // じょうぎマンの攻撃アニメーション
                 heroSprite.style.transform = "translateX(50px) scale(1.1)";
                 setTimeout(() => {
                     heroSprite.style.transform = "none";
-                    // 攻撃エフェクト
                     slashEffect.classList.remove('hidden');
                     sounds.playAttack();
-                    
+
                     enemySprite.classList.add('animate-hit');
                     setTimeout(() => {
                         enemySprite.classList.remove('animate-hit');
@@ -916,90 +801,110 @@
                     }, 500);
                 }, 200);
 
-                // メッセージを表示
-                feedbackIcon.textContent = "🎉";
-                feedbackTitle.textContent = "せいかい！";
-                feedbackTitle.className = "text-2xl font-black text-green-600 font-pixel";
-                feedbackDesc.textContent = currentQuiz.desc;
-                feedbackPanel.classList.remove('hidden');
+                // フィードバック表示
+                document.getElementById('feedback-icon').textContent = "🎉";
+                document.getElementById('feedback-title').textContent = "大せいかい！";
+                document.getElementById('feedback-title').className = "text-2xl font-black text-green-600 font-pixel";
+
+                let expl = "";
+                if (p.type === 'ADD') {
+                    expl = `せいかい！ ${p.angleA}度 ＋ ${p.angleB}度 ＝ ${p.ans}度 だね！ぴったり合わせるたし算だ！`;
+                } else if (p.type === 'SUB180') {
+                    expl = `せいかい！直線の180度から、ぴったりならんだ2つの角をひいて、180度 ─ (${p.angleA}度 ＋ ${p.angleB}度) ＝ ${p.ans}度 と計算できるよ！`;
+                } else if (p.type === 'SUB360') {
+                    expl = `大せいかい！1周の360度から、くっついた2つの角をひいて、360度 ─ (${p.angleA}度 ＋ ${p.angleB}度) ＝ ${p.ans}度 になるね！`;
+                }
+                document.getElementById('feedback-desc').textContent = expl;
+                document.getElementById('feedback-panel').classList.remove('hidden');
 
             } else {
                 sounds.playIncorrect();
-                
-                // キングがわらう動き
+
+                // キングがニヤニヤ動く
                 enemySprite.style.transform = "scale(1.2) translateY(-10px)";
                 setTimeout(() => {
                     enemySprite.style.transform = "none";
                 }, 400);
 
-                feedbackIcon.textContent = "😈";
-                feedbackTitle.textContent = "ちがうよ！もういちど！";
-                feedbackTitle.className = "text-2xl font-black text-red-500 font-pixel";
-                feedbackDesc.textContent = "ぶんどキング「ワハハ！まだまだ修行（しゅぎょう）がたりないな！もう一回チャレンジだ！」";
-                feedbackPanel.classList.remove('hidden');
+                // 不正解時の表示
+                document.getElementById('feedback-icon').textContent = "😈";
+                document.getElementById('feedback-title').textContent = "ちがうよ！おしい！";
+                document.getElementById('feedback-title').className = "text-2xl font-black text-red-500 font-pixel";
+                document.getElementById('feedback-desc').textContent = `ぶんどキング「ワハハ！計算ミスをしていないかな？定規の角はそれぞれ${p.angleA}度と${p.angleB}度だから、もう一度計算しなおしてみよう！」`;
+                document.getElementById('feedback-panel').classList.remove('hidden');
             }
         }
 
 
-        // --- 「つぎへ」ボタンの処理 ---
-        nextBtn.addEventListener('click', () => {
-            feedbackPanel.classList.add('hidden');
+        // --- つぎの問題へすすむボタン ---
+        document.getElementById('next-btn').addEventListener('click', () => {
+            document.getElementById('feedback-panel').classList.add('hidden');
 
-            const currentQuiz = quizData[currentQuizIndex];
-            
-            // クイズのステージが変わるかチェック
-            const isLastOfCurrentStage = (currentQuizIndex === quizData.length - 1) || 
-                                         (quizData[currentQuizIndex + 1].stage !== currentQuiz.stage);
-
-            if (currentQuizIndex < quizData.length - 1) {
-                // つぎの問題へ
-                currentQuizIndex++;
-                
-                // 敵のHPをへらす
-                if (isLastOfCurrentStage) {
-                    hp--;
-                    updateHpBar();
-                }
-
-                loadQuiz(currentQuizIndex);
-            } else {
-                // 全問クリア！エンディングへ
-                hp = 0;
+            const titleText = document.getElementById('feedback-title').textContent;
+            if (titleText === "大せいかい！") {
+                hp--;
                 updateHpBar();
-                sounds.playFanfare();
-                screenGame.classList.add('hidden');
-                screenEnding.classList.remove('hidden');
+
+                if (hp > 0) {
+                    generateProblem();
+                } else {
+                    sounds.playFanfare();
+                    document.getElementById('screen-game').classList.add('hidden');
+                    document.getElementById('screen-ending').classList.remove('hidden');
+                }
             }
         });
 
-
-        // --- HPバーの更新 ---
+        // HPバーの更新
         function updateHpBar() {
-            const percent = (hp / totalStages) * 100;
-            hpBar.style.width = `${percent}%`;
-            hpText.textContent = `${hp} / ${totalStages}`;
+            const percent = (hp / maxHp) * 100;
+            const bar = document.getElementById('hp-bar');
+            bar.style.width = `${percent}%`;
+            document.getElementById('hp-text').textContent = `${hp} / ${maxHp}`;
 
-            if (hp === 2) {
-                hpBar.className = "bg-gradient-to-r from-red-500 to-orange-400 h-full w-full transition-all duration-500";
-            } else if (hp === 1) {
-                hpBar.className = "bg-red-500 h-full w-full transition-all duration-500";
+            if (hp <= 2) {
+                bar.className = "bg-red-500 h-full w-full transition-all duration-500";
+            } else if (hp <= 4) {
+                bar.className = "bg-gradient-to-r from-red-500 to-orange-400 h-full w-full transition-all duration-500";
+            } else {
+                bar.className = "bg-gradient-to-r from-red-500 via-orange-400 to-green-500 h-full w-full transition-all duration-500";
             }
         }
 
 
-        // --- もう一度遊ぶ（リセット） ---
-        restartBtn.addEventListener('click', () => {
-            currentQuizIndex = 0;
-            hp = 3;
-            updateHpBar();
-            hpBar.className = "bg-gradient-to-r from-red-500 via-orange-400 to-green-500 h-full w-full transition-all duration-500";
-            
-            // あたらしいランダム角度をセット
-            generateRandomAngleQuizzes();
+        // --- 見た目切り替えスイッチ ---
+        const styleBtn = document.getElementById('style-toggle');
+        styleBtn.addEventListener('click', () => {
+            sounds.playTone(800, 'triangle', 0.05);
+            if (currentStyle === 'cardboard') {
+                currentStyle = 'plastic';
+                styleBtn.textContent = "🎨 見た目: カラフル";
+            } else {
+                currentStyle = 'cardboard';
+                styleBtn.textContent = "🎨 見た目: ダンボール";
+            }
+            drawScene();
+        });
 
-            screenEnding.classList.add('hidden');
-            screenGame.classList.remove('hidden');
-            loadQuiz(0);
+
+        // --- リスタート ---
+        document.getElementById('restart-btn').addEventListener('click', () => {
+            sounds.playTone(800, 'triangle', 0.05);
+            hp = maxHp;
+            updateHpBar();
+            document.getElementById('screen-ending').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('hidden');
+            generateProblem();
+        });
+
+        // オープニングボタン
+        document.getElementById('start-btn').addEventListener('click', () => {
+            if (bgmOn) {
+                sounds.startBgm();
+            }
+            document.getElementById('screen-intro').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('hidden');
+            generateProblem();
         });
 
     </script>
