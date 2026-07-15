@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三角じょうぎマンの角度計算バトル！</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* アニメーション用のカスタムスタイル */
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(0.95); }
+        }
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        @keyframes flame-burn {
+            0%, 100% { transform: scale(1) rotate(-5deg); }
+            50% { transform: scale(1.2) rotate(5deg); filter: hue-rotate(15deg); }
+        }
+        @keyframes hit-shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+        @keyframes slash-effect {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+            100% { transform: scale(1.5) rotate(360deg); opacity: 0; }
+        }
+        .animate-bounce-slow {
+            animation: bounce-slow 1.2s infinite ease-in-out;
+        }
+        .animate-float-slow {
+            animation: float-slow 3s infinite ease-in-out;
+        }
+        .animate-flame {
+            animation: flame-burn 0.3s infinite ease-in-out;
+        }
+        .animate-hit {
+            animation: hit-shake 0.5s ease-in-out;
+        }
+        .slash {
+            animation: slash-effect 0.4s ease-out forwards;
+        }
+        /* レトロなフォントスタイル */
+        @import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Kiwi+Maru:wght@500&display=swap');
+        .font-pixel {
+            font-family: 'DotGothic16', sans-serif;
+        }
+        .font-friendly {
+            font-family: 'Kiwi Maru', serif;
+        }
+        /* ダンボール調のテクスチャ */
+        .cardboard-bg {
+            background-color: #d7b58a;
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 4px, rgba(0, 0, 0, 0.03) 4px, rgba(0, 0, 0, 0.03) 8px);
+            border: 4px solid #b28a5b;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.15), 4px 4px 0px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="bg-amber-50 font-friendly min-h-screen text-slate-800 flex flex-col justify-between overflow-x-hidden">
+
+    <!-- ヘッダー -->
+    <header class="bg-blue-600 text-white py-3 px-4 shadow-md flex justify-between items-center z-10">
+        <div class="flex items-center space-x-2">
+            <span class="text-2xl">▲</span>
+            <h1 class="text-lg md:text-xl font-bold tracking-wider font-pixel">三角じょうぎマン vs ぶんどキング</h1>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button id="bgm-toggle" class="bg-blue-800 hover:bg-blue-900 text-white text-xs py-1 px-3 rounded-full transition-colors flex items-center space-x-1 border border-blue-400">
+                <span>🔊 BGM: ON</span>
+            </button>
+            <div class="text-xs bg-blue-700 px-2 py-1 rounded">小4算数・角度の計算</div>
+        </div>
+    </header>
+
+    <!-- メインゲームコンテナ -->
+    <main class="flex-grow flex flex-col items-center justify-center p-2 md:p-4 max-w-4xl w-full mx-auto">
+        
+        <!-- ================= スクリーン1: オープニング画面 ================= -->
+        <div id="screen-intro" class="w-full bg-white rounded-3xl p-6 shadow-xl border-4 border-blue-400 text-center flex flex-col items-center space-y-6">
+            <div class="relative w-full py-4 bg-gradient-to-r from-blue-100 via-amber-100 to-red-100 rounded-2xl overflow-hidden shadow-inner border border-amber-200">
+                <h2 class="text-3xl md:text-5xl font-extrabold text-blue-600 drop-shadow-md font-pixel mb-1 animate-pulse">
+                    角度計算バトル！
+                </h2>
+                <p class="text-md md:text-lg text-slate-600 font-bold">〜 合体三角じょうぎのナゾ 〜</p>
+                
+                <!-- キャラクタースタンド -->
+                <div class="flex justify-around items-end mt-8 px-4 h-44 relative">
+                    <!-- 三角じょうぎマン -->
+                    <div class="flex flex-col items-center animate-bounce-slow">
+                        <!-- 自作SVG -->
+                        <div class="w-28 h-28 relative">
+                            <!-- 三角じょうぎマン全身 -->
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <circle cx="50" cy="35" r="20" fill="#ffddcc" stroke="#333" stroke-width="2"/>
+                                <rect x="30" y="20" width="40" height="8" fill="#1d4ed8" rx="2"/>
+                                <polygon points="50,21 46,27 54,27" fill="#facc15" stroke="#333" stroke-width="0.5"/>
+                                <path d="M 40,43 Q 50,48 60,43" fill="none" stroke="#333" stroke-width="2"/>
+                                <polygon points="42,43 45,43 43.5,46" fill="#fff"/>
+                                <polygon points="46,44 49,44 47.5,47" fill="#fff"/>
+                                <polygon points="51,44 54,44 52.5,47" fill="#fff"/>
+                                <polygon points="55,43 58,43 56.5,46" fill="#fff"/>
+                                <ellipse cx="43" cy="32" rx="3" ry="5" fill="#333"/>
+                                <ellipse cx="57" cy="32" rx="3" ry="5" fill="#333"/>
+                                <path d="M 40,26 Q 43,21 41,27 Q 44,28 43,30" fill="#ef4444" class="animate-flame"/>
+                                <path d="M 54,26 Q 57,21 55,27 Q 58,28 57,30" fill="#ef4444" class="animate-flame"/>
+                                <rect x="42" y="55" width="16" height="25" fill="#1e40af" rx="4"/>
+                                <polygon points="50,58 45,67 55,67" fill="#facc15"/>
+                                <line x1="42" y1="75" x2="35" y2="92" stroke="#1e40af" stroke-width="5" stroke-linecap="round"/>
+                                <line x1="58" y1="75" x2="65" y2="92" stroke="#1e40af" stroke-width="5" stroke-linecap="round"/>
+                                <path d="M 30,92 C 30,92 35,90 38,95" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+                                <path d="M 70,92 C 70,92 65,90 62,95" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+                                <line x1="42" y1="58" x2="25" y2="65" stroke="#333" stroke-width="2"/>
+                                <polygon points="25,50 10,80 25,80" fill="#d7b58a" stroke="#b28a5b" stroke-width="1.5"/>
+                                <path d="M 25,50 L 10,80 L 25,80 Z" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="2,2"/>
+                                <circle cx="20" cy="70" r="2.5" fill="#fff" stroke="#333" stroke-width="1"/>
+                                <line x1="58" y1="58" x2="72" y2="62" stroke="#333" stroke-width="2"/>
+                                <polygon points="70,55 90,55 80,75" fill="#d7b58a" stroke="#b28a5b" stroke-width="1.5"/>
+                                <path d="M 70,55 L 90,55 L 80,75 Z" fill="none" stroke="#2563eb" stroke-width="2"/>
+                                <circle cx="80" cy="61" r="2.5" fill="#fff" stroke="#333" stroke-width="1"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-bold border border-blue-300">三角じょうぎマン</span>
+                    </div>
+
+                    <!-- VS -->
+                    <div class="text-2xl font-black text-red-600 font-pixel self-center py-2 px-4 bg-yellow-400 rounded-full border-2 border-red-600 animate-pulse">VS</div>
+
+                    <!-- ぶんどキング -->
+                    <div class="flex flex-col items-center animate-float-slow">
+                        <div class="w-28 h-28 relative">
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <path d="M 20,35 A 30,30 0 0,1 80,35 Z" fill="#fef08a" stroke="#eab308" stroke-width="3"/>
+                                <line x1="50" y1="35" x2="50" y2="5" stroke="#eab308" stroke-width="1.5"/>
+                                <line x1="50" y1="35" x2="23" y2="20" stroke="#eab308" stroke-width="1"/>
+                                <line x1="50" y1="35" x2="77" y2="20" stroke="#eab308" stroke-width="1"/>
+                                <line x1="20" y1="35" x2="80" y2="35" stroke="#eab308" stroke-width="3"/>
+                                <circle cx="50" cy="35" r="4" fill="#ef4444"/>
+                                <circle cx="50" cy="55" r="16" fill="#ffddcc" stroke="#333" stroke-width="2"/>
+                                <path d="M 40,51 Q 44,48 48,51" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M 52,51 Q 56,48 60,51" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                                <ellipse cx="50" cy="59" rx="5" ry="2" fill="#854d0e"/>
+                                <path d="M 44,61 Q 50,66 56,61" fill="none" stroke="#333" stroke-width="2"/>
+                                <rect x="42" y="71" width="16" height="18" fill="#dc2626" rx="2"/>
+                                <rect x="42" y="71" width="8" height="18" fill="#fbbf24"/>
+                                <line x1="44" y1="89" x2="40" y2="98" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
+                                <line x1="56" y1="89" x2="60" y2="98" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
+                                <line x1="38" y1="73" x2="25" y2="85" stroke="#333" stroke-width="2"/>
+                                <path d="M 15,85 A 10,10 0 0,1 35,85 Z" fill="#fef08a" stroke="#333" stroke-width="1.5"/>
+                                <line x1="15" y1="85" x2="35" y2="85" stroke="#333" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded-full font-bold border border-red-300">ぶんどキング</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 説明テキスト -->
+            <div class="max-w-md mx-auto space-y-3 text-left bg-blue-50 p-4 rounded-xl border border-blue-100 text-sm md:text-base leading-relaxed">
+                <p class="font-bold text-center text-blue-700 text-lg">ぶんどキングがふたたびあらわれた！</p>
+                <p>「ふっふっふ！今度は2つの三角定規（三角じょうぎ）を組み合わせた、合体角度の問題（もんだい）だ！計算してオレ様の出すナゾをといてみよ！」</p>
+                <p class="text-slate-600 font-medium">三角じょうぎマンといっしょに、組み合わされた角度をすばやく計算して、ぶんどキングをやっつけよう！</p>
+            </div>
+
+            <button id="start-btn" class="w-full max-w-sm py-4 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-slate-900 text-2xl font-black rounded-2xl shadow-lg border-b-8 border-amber-700 active:border-b-2 active:translate-y-1 transition-all font-pixel">
+                バトルスタート！
+            </button>
+        </div>
+
+        <!-- ================= スクリーン2: メインバトル画面 ================= -->
+        <div id="screen-game" class="w-full bg-white rounded-3xl p-4 md:p-6 shadow-xl border-4 border-blue-400 flex flex-col space-y-4 hidden">
+            
+            <!-- 上部: バトルヘッダー -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center border-b pb-3 border-slate-100">
+                <div class="md:col-span-3 text-center md:text-left">
+                    <span id="stage-badge" class="bg-blue-600 text-white font-pixel text-sm px-3 py-1.5 rounded-full inline-block shadow-sm">
+                        三角じょうぎ計算バトル
+                    </span>
+                </div>
+                <!-- HPバー -->
+                <div class="md:col-span-9 flex items-center space-x-2">
+                    <span class="text-xs font-bold text-slate-500 font-pixel whitespace-nowrap">ぶんどキング HP:</span>
+                    <div class="w-full bg-slate-200 h-6 rounded-full overflow-hidden border border-slate-300 shadow-inner relative flex items-center">
+                        <div id="hp-bar" class="bg-gradient-to-r from-red-500 via-orange-400 to-green-500 h-full w-full transition-all duration-500"></div>
+                        <span id="hp-text" class="absolute inset-0 flex items-center justify-center text-xs font-bold text-slate-800 drop-shadow-sm font-pixel">5 / 5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 中部: キャラクター対決 & Canvas図解 -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                
+                <!-- 左側: 戦闘エリア -->
+                <div class="md:col-span-4 bg-gradient-to-b from-blue-50 to-amber-50 rounded-2xl p-3 border border-slate-200 h-64 flex flex-col justify-between relative overflow-hidden">
+                    
+                    <!-- 斬撃エフェクト -->
+                    <div id="slash-effect" class="absolute inset-0 flex items-center justify-center z-20 pointer-events-none hidden">
+                        <svg viewBox="0 0 100 100" class="w-32 h-32 slash text-yellow-400 fill-current">
+                            <polygon points="50,10 60,40 90,50 60,60 50,90 40,60 10,50 40,40"/>
+                        </svg>
+                    </div>
+
+                    <!-- 吹き出し -->
+                    <div class="bg-white rounded-lg p-2 shadow-md border border-slate-200 text-xs text-slate-700 relative z-10 font-bold min-h-[52px] flex items-center">
+                        <p id="battle-dialogue">ぶんどキング「ワハハ！合体角度だ。計算できるかな？」</p>
+                    </div>
+
+                    <!-- キャラクター配置 -->
+                    <div class="flex justify-between items-end px-2 h-28 relative">
+                        <!-- 三角じょうぎマン -->
+                        <div id="hero-sprite" class="w-20 h-20 transition-all duration-300 animate-bounce-slow">
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <circle cx="50" cy="35" r="20" fill="#ffddcc" stroke="#333" stroke-width="2"/>
+                                <rect x="30" y="20" width="40" height="8" fill="#1d4ed8" rx="2"/>
+                                <polygon points="50,21 46,27 54,27" fill="#facc15" stroke="#333" stroke-width="0.5"/>
+                                <path d="M 40,43 Q 50,48 60,43" fill="none" stroke="#333" stroke-width="2"/>
+                                <polygon points="42,43 45,43 43.5,46" fill="#fff"/><polygon points="46,44 49,44 47.5,47" fill="#fff"/>
+                                <polygon points="51,44 54,44 52.5,47" fill="#fff"/><polygon points="55,43 58,43 56.5,46" fill="#fff"/>
+                                <ellipse cx="43" cy="32" rx="3" ry="5" fill="#333"/><ellipse cx="57" cy="32" rx="3" ry="5" fill="#333"/>
+                                <path d="M 40,26 Q 43,21 41,27 Q 44,28 43,30" fill="#ef4444" class="animate-flame"/>
+                                <path d="M 54,26 Q 57,21 55,27 Q 58,28 57,30" fill="#ef4444" class="animate-flame"/>
+                                <rect x="42" y="55" width="16" height="25" fill="#1e40af" rx="4"/>
+                                <polygon points="50,58 45,67 55,67" fill="#facc15"/>
+                                <line x1="42" y1="75" x2="35" y2="92" stroke="#1e40af" stroke-width="5" stroke-linecap="round"/>
+                                <line x1="58" y1="75" x2="65" y2="92" stroke="#1e40af" stroke-width="5" stroke-linecap="round"/>
+                                <path d="M 30,92 C 30,92 35,90 38,95" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+                                <path d="M 70,92 C 70,92 65,90 62,95" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+                                <line x1="42" y1="58" x2="25" y2="65" stroke="#333" stroke-width="2"/>
+                                <polygon points="25,50 10,80 25,80" fill="#d7b58a" stroke="#b28a5b" stroke-width="1.5"/>
+                                <circle cx="20" cy="70" r="2.5" fill="#fff" stroke="#333" stroke-width="1"/>
+                                <line x1="58" y1="58" x2="72" y2="62" stroke="#333" stroke-width="2"/>
+                                <polygon points="70,55 90,55 80,75" fill="#d7b58a" stroke="#b28a5b" stroke-width="1.5"/>
+                                <circle cx="80" cy="61" r="2.5" fill="#fff" stroke="#333" stroke-width="1"/>
+                            </svg>
+                        </div>
+
+                        <!-- ぶんどキング -->
+                        <div id="enemy-sprite" class="w-20 h-20 transition-all duration-300 animate-float-slow">
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <path d="M 20,35 A 30,30 0 0,1 80,35 Z" fill="#fef08a" stroke="#eab308" stroke-width="3"/>
+                                <line x1="50" y1="35" x2="50" y2="5" stroke="#eab308" stroke-width="1.5"/>
+                                <line x1="50" y1="35" x2="23" y2="20" stroke="#eab308" stroke-width="1"/>
+                                <line x1="50" y1="35" x2="77" y2="20" stroke="#eab308" stroke-width="1"/>
+                                <line x1="20" y1="35" x2="80" y2="35" stroke="#eab308" stroke-width="3"/>
+                                <circle cx="50" cy="35" r="4" fill="#ef4444"/>
+                                <circle cx="50" cy="55" r="16" fill="#ffddcc" stroke="#333" stroke-width="2"/>
+                                <path d="M 40,51 Q 44,48 48,51" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M 52,51 Q 56,48 60,51" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                                <ellipse cx="50" cy="59" rx="5" ry="2" fill="#854d0e"/>
+                                <path d="M 44,61 Q 50,66 56,61" fill="none" stroke="#333" stroke-width="2"/>
+                                <rect x="42" y="71" width="16" height="18" fill="#dc2626" rx="2"/>
+                                <rect x="42" y="71" width="8" height="18" fill="#fbbf24"/>
+                                <line x1="44" y1="89" x2="40" y2="98" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
+                                <line x1="56" y1="89" x2="60" y2="98" stroke="#dc2626" stroke-width="4" stroke-linecap="round"/>
+                                <line x1="38" y1="73" x2="25" y2="85" stroke="#333" stroke-width="2"/>
+                                <path d="M 15,85 A 10,10 0 0,1 35,85 Z" fill="#fef08a" stroke="#333" stroke-width="1.5"/>
+                                <line x1="15" y1="85" x2="35" y2="85" stroke="#333" stroke-width="2"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右側: Canvasによる角度図解エリア -->
+                <div class="md:col-span-8 flex flex-col items-center justify-center p-3 border border-slate-200 rounded-2xl bg-slate-50 min-h-[260px] relative">
+                    <!-- 定規スタイル切り替え -->
+                    <button id="style-toggle" class="absolute top-2 right-2 bg-slate-200 hover:bg-slate-300 active:scale-95 text-[10px] text-slate-700 font-bold px-2 py-1 rounded shadow-xs z-10 transition-all">
+                        🎨 見た目: ダンボール
+                    </button>
+                    <!-- 図解Canvas -->
+                    <div id="canvas-container" class="w-full max-w-[440px] aspect-[12/7] relative flex justify-center items-end mt-4">
+                        <canvas id="drill-canvas" width="480" height="280" class="w-full h-full drop-shadow-md"></canvas>
+                    </div>
+                    <!-- テキスト問題文 -->
+                    <div id="question-text-box" class="w-full text-center mt-3 px-4">
+                        <p id="question-p" class="font-bold text-slate-800 text-sm md:text-base leading-relaxed">
+                            ロード中...
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 下部: 回答選択肢エリア -->
+            <div id="choices-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <!-- JavaScriptでボタンが動的に4つ入ります -->
+            </div>
+
+            <!-- フィードバックモーダル -->
+            <div id="feedback-panel" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 z-50">
+                <div class="bg-white rounded-3xl p-6 shadow-2xl border-4 border-blue-400 max-w-sm w-full text-center space-y-4 animate-bounce-slow">
+                    <div id="feedback-icon" class="text-6xl">🎉</div>
+                    <h3 id="feedback-title" class="text-2xl font-black text-slate-800 font-pixel">せいかい！</h3>
+                    <p id="feedback-desc" class="text-slate-600 font-medium text-sm md:text-base">素晴らしい！バッチリ計算できたね！</p>
+                    <button id="next-btn" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md font-pixel">
+                        つぎの問題へすすむ！
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= スクリーン3: エンディング ================= -->
+        <div id="screen-ending" class="w-full bg-white rounded-3xl p-6 shadow-xl border-4 border-amber-400 flex flex-col items-center space-y-6 hidden">
+            <h2 class="text-3xl font-black text-amber-500 font-pixel animate-bounce">完全クリア！おめでとう！</h2>
+            
+            <div class="cardboard-bg p-4 rounded-2xl w-full max-w-md flex flex-col space-y-4">
+                <div class="flex items-center space-x-4 bg-white/80 p-3 rounded-xl border border-amber-200">
+                    <!-- キング涙 -->
+                    <div class="w-16 h-16 shrink-0">
+                        <svg viewBox="0 0 100 100" class="w-full h-full">
+                            <circle cx="50" cy="50" r="40" fill="#ffddcc" stroke="#333" stroke-width="3"/>
+                            <path d="M 30,45 Q 35,42 40,45" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M 60,45 Q 65,42 70,45" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="35" cy="55" r="4" fill="#60a5fa" class="animate-pulse"/>
+                            <ellipse cx="50" cy="62" rx="10" ry="8" fill="#854d0e"/>
+                            <ellipse cx="50" cy="60" rx="8" ry="6" fill="#f43f5e"/>
+                        </svg>
+                    </div>
+                    <div class="text-xs md:text-sm">
+                        <span class="font-bold text-red-600">ぶんどキング</span>
+                        <p class="mt-1 font-semibold text-slate-800">「ぐわぁぁ！合体定規のナゾをすべて解くとは…！キミの計算力、本物だ！」</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4 bg-white/80 p-3 rounded-xl border border-amber-200">
+                    <div class="text-xs md:text-sm text-right flex-grow">
+                        <span class="font-bold text-blue-600">三角じょうぎマン</span>
+                        <p class="mt-1 font-semibold text-slate-800">「やったね！角度をあわせる『たし算』、直線や1周から引く『ひき算』、ぜんぶカンペキだ！」</p>
+                    </div>
+                    <!-- じょうぎマン -->
+                    <div class="w-16 h-16 shrink-0">
+                        <svg viewBox="0 0 100 100" class="w-full h-full">
+                            <circle cx="50" cy="50" r="40" fill="#ffddcc" stroke="#333" stroke-width="3"/>
+                            <ellipse cx="35" cy="40" rx="5" ry="8" fill="#333"/>
+                            <ellipse cx="65" cy="40" rx="5" ry="8" fill="#333"/>
+                            <path d="M 40,65 Q 50,75 60,65" fill="none" stroke="#333" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="bg-amber-100 p-3 rounded-xl border border-amber-300 text-xs md:text-sm leading-relaxed font-bold text-amber-900 text-center">
+                    ぶんどキング「これで角度の宿題は完ペキだな！さすがは我が愛するジョウギル王子…」<br>
+                    三角じょうぎマン「オ、オヤジ〜！算数シートの問題も、これでばっちり100点満点だ！」
+                </div>
+            </div>
+
+            <div class="text-center space-y-2">
+                <p class="text-lg font-bold text-slate-800">🎉 角度の計算をマスターした！ 🎉</p>
+                <p class="text-sm text-slate-600">合体三角定規の角度のヒミツをぜんぶ解き明かしたぞ！これからも算数をたのしく学ぼう！</p>
+            </div>
+
+            <button id="restart-btn" class="w-full max-w-sm py-4 bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold rounded-2xl shadow-lg border-b-8 border-blue-900 active:border-b-2 active:translate-y-1 transition-all font-pixel">
+                もういちどあそぶ！
+            </button>
+        </div>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="bg-slate-100 border-t border-slate-200 py-3 text-center text-xs text-slate-500 z-10">
+        <p>© 2026 三角じょうぎマン教育委員会 & ぶんどキング帝国</p>
+        <p class="mt-1">※小学4年生算数の角度「三角定規の組み合わせ」の学習を応援する知育ゲームです。</p>
+    </footer>
+
+    <!-- JSロジック -->
+    <script>
+        // --- サウンドシステム (Web Audio API を使用したレトロゲーム音源) ---
+        class SoundEffects {
+            constructor() {
+                this.ctx = null;
+                this.muted = false;
+                this.bgmTimer = null;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+
+            playTone(freq, type, duration, delay = 0) {
+                if (this.muted) return;
+                this.init();
+                
+                setTimeout(() => {
+                    try {
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        
+                        osc.type = type;
+                        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                        
+                        gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+                        
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        
+                        osc.start();
+                        osc.stop(this.ctx.currentTime + duration);
+                    } catch (e) {
+                        console.log("Audio play error", e);
+                    }
+                }, delay * 1000);
+            }
+
+            playCorrect() {
+                this.playTone(523.25, 'sine', 0.1, 0); // ド
+                this.playTone(659.25, 'sine', 0.15, 0.08); // ミ
+                this.playTone(783.99, 'sine', 0.2, 0.16); // ソ
+                this.playTone(1046.50, 'sine', 0.3, 0.24); // 高いド
+            }
+
+            playIncorrect() {
+                this.playTone(293.66, 'sawtooth', 0.2, 0); // レ
+                this.playTone(277.18, 'sawtooth', 0.3, 0.15); // C# (下がってはずれる)
+            }
+
+            playAttack() {
+                this.playTone(150, 'triangle', 0.05, 0);
+                this.playTone(300, 'sawtooth', 0.1, 0.02);
+                this.playTone(600, 'sawtooth', 0.15, 0.05);
+            }
+
+            playFanfare() {
+                const notes = [523.25, 523.25, 523.25, 523.25, 659.25, 587.33, 659.25, 783.99];
+                const delays = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.85];
+                const durs = [0.08, 0.08, 0.08, 0.15, 0.1, 0.1, 0.1, 0.4];
+                notes.forEach((n, i) => {
+                    this.playTone(n, 'triangle', durs[i], delays[i]);
+                });
+            }
+
+            startBgm() {
+                if (this.muted) return;
+                this.init();
+                
+                const melody = [
+                    523, 587, 659, 523, 659, 523, 587, 392,
+                    587, 659, 698, 587, 698, 587, 659, 523
+                ];
+                let time = 0;
+                melody.forEach((f, i) => {
+                    this.playTone(f, 'sine', 0.2, time);
+                    time += 0.25;
+                });
+
+                this.bgmTimer = setTimeout(() => this.startBgm(), time * 1000);
+            }
+
+            stopBgm() {
+                if (this.bgmTimer) {
+                    clearTimeout(this.bgmTimer);
+                }
+            }
+        }
+
+        const sounds = new SoundEffects();
+        let bgmOn = true;
+
+        document.getElementById('bgm-toggle').addEventListener('click', () => {
+            bgmOn = !bgmOn;
+            sounds.muted = !bgmOn;
+            const btnText = document.querySelector('#bgm-toggle span');
+            if (bgmOn) {
+                btnText.textContent = "🔊 BGM: ON";
+                sounds.startBgm();
+            } else {
+                btnText.textContent = "🔇 BGM: OFF";
+                sounds.stopBgm();
+            }
+        });
+
+
+        // --- ゲーム定数 ＆ キャンバス描画 ---
+        const canvas = document.getElementById('drill-canvas');
+        const ctx = canvas.getContext('2d');
+        let currentStyle = 'cardboard'; // 'cardboard' or 'plastic'
+
+        // ズレを100%排除する絶対定規描画システム（青テープ線を削除してダンボール色のみに！）
+        function drawSetSquareAbsolute(type, vertexIndex, cx, cy, startAngle, sweepDirection = 1) {
+            let sweepAngleDeg = 0;
+            let len1 = 0;
+            let len2 = 0;
+            
+            if (type === 'iso') {
+                if (vertexIndex === 0) { // 90°の角
+                    sweepAngleDeg = 90;
+                    len1 = 120;
+                    len2 = 120;
+                } else { // 45°の角
+                    sweepAngleDeg = 45;
+                    len1 = (vertexIndex === 1) ? 120 : 120 * Math.sqrt(2);
+                    len2 = (vertexIndex === 1) ? 120 * Math.sqrt(2) : 120;
+                }
+            } else { // scal (30-60-90)
+                if (vertexIndex === 0) { // 90°の角
+                    sweepAngleDeg = 90;
+                    len1 = 110; // 短い辺 (60°方向)
+                    len2 = 190.52; // 長い辺 (30°方向, 110 * √3)
+                } else if (vertexIndex === 1) { // 30°の角
+                    sweepAngleDeg = 30;
+                    len1 = 220; // 斜辺 (60°方向)
+                    len2 = 190.52; // 長い辺 (90°方向)
+                } else { // 60°の角
+                    sweepAngleDeg = 60;
+                    len1 = 110; // 短い辺 (90°方向)
+                    len2 = 220; // 斜辺 (30°方向)
+                }
+            }
+            
+            const sweepAngleRad = (sweepAngleDeg * Math.PI) / 180 * sweepDirection;
+            const endAngle = startAngle + sweepAngleRad;
+            
+            // 各先端頂点の座標計算
+            const x1 = cx + Math.cos(startAngle) * len1;
+            const y1 = cy + Math.sin(startAngle) * len1;
+            const x2 = cx + Math.cos(endAngle) * len2;
+            const y2 = cy + Math.sin(endAngle) * len2;
+            
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.closePath();
+            
+            // スタイル適用
+            if (currentStyle === 'cardboard') {
+                // シンプルなダンボールスキン（青いテープを排除し、完全な茶色に！）
+                ctx.fillStyle = '#d7b58a';
+                ctx.strokeStyle = '#a17849'; // 少し濃い茶色
+                ctx.lineWidth = 4;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.12)';
+                ctx.shadowBlur = 4;
+                ctx.shadowOffsetY = 3;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetY = 0;
+                ctx.stroke();
+            } else {
+                // カラフルプラスチックスキン
+                ctx.fillStyle = type === 'iso' ? 'rgba(34, 211, 238, 0.55)' : 'rgba(251, 191, 36, 0.55)';
+                ctx.strokeStyle = type === 'iso' ? '#0891b2' : '#d97706';
+                ctx.lineWidth = 3;
+                ctx.fill();
+                ctx.stroke();
+            }
+            
+            // 内側のくり抜き覗き穴
+            const centroidX = (cx + x1 + x2) / 3;
+            const centroidY = (cy + y1 + y2) / 3;
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(centroidX, centroidY, 13, 0, Math.PI * 2);
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fill();
+            ctx.restore();
+            
+            ctx.beginPath();
+            ctx.arc(centroidX, centroidY, 13, 0, Math.PI * 2);
+            ctx.lineWidth = currentStyle === 'cardboard' ? 2 : 1.5;
+            ctx.stroke();
+            
+            // 辺1（中心からx1, y1のライン）に沿って目盛り線を描く
+            ctx.save();
+            ctx.strokeStyle = currentStyle === 'cardboard' ? '#78542c' : 'rgba(0,0,0,0.35)';
+            ctx.lineWidth = 1;
+            
+            const step = 8;
+            for (let d = step; d < len1 - 5; d += step) {
+                const isMajor = (Math.round(d / step) % 5 === 0);
+                const tickL = isMajor ? 7 : 4;
+                const tx = cx + Math.cos(startAngle) * d;
+                const ty = cy + Math.sin(startAngle) * d;
+                const perpAngle = startAngle + (Math.PI / 2) * sweepDirection;
+                ctx.beginPath();
+                ctx.moveTo(tx, ty);
+                ctx.lineTo(tx + Math.cos(perpAngle) * tickL, ty + Math.sin(perpAngle) * tickL);
+                ctx.stroke();
+            }
+            ctx.restore();
+            ctx.restore();
+            
+            return {
+                startAngle: startAngle,
+                endAngle: endAngle,
+                sweepAngleRad: sweepAngleRad,
+                sweepAngleDeg: sweepAngleDeg
+            };
+        }
+
+        // 角度円弧を描く共通処理
+        function drawAngleArc(startAngle, endAngle, label, radius = 55, cx = 240, cy = 180, forceAnticlockwise = false) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, radius, startAngle, endAngle, forceAnticlockwise);
+            ctx.lineTo(cx, cy);
+            ctx.closePath();
+
+            ctx.fillStyle = 'rgba(239, 68, 68, 0.35)';
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, startAngle, endAngle, forceAnticlockwise);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = '#ef4444';
+            ctx.stroke();
+
+            // ラベル文字「あ」「い」の位置計算
+            let midAngle;
+            if (forceAnticlockwise) {
+                let diff = endAngle - startAngle;
+                if (diff > 0) diff -= Math.PI * 2;
+                midAngle = startAngle + diff / 2;
+            } else {
+                midAngle = startAngle + (endAngle - startAngle) / 2;
+            }
+            
+            const textDist = radius + 20;
+            const tx = cx + Math.cos(midAngle) * textDist;
+            const ty = cy + Math.sin(midAngle) * textDist;
+
+            ctx.font = 'bold 22px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.shadowColor = 'white';
+            ctx.shadowBlur = 6;
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = 'white';
+            ctx.strokeText(label, tx, ty);
+            ctx.fillStyle = '#ef4444';
+            ctx.fillText(label, tx, ty);
+
+            ctx.restore();
+        }
+
+
+        // --- クイズシステム（シンプル選択式） ---
+        let currentProblem = null;
+        let hp = 5; // キングの最大HP
+        const maxHp = 5;
+
+        // 問題タイプ別の定規・角度設定（ズレ防止ドッキングシステム）
+        function generateProblem() {
+            const types = ['ADD', 'SUB180', 'SUB360'];
+            let chosenType = types[Math.floor(Math.random() * types.length)];
+
+            // 定規の角候補
+            const angleAOptions = [
+                { index: 0, val: 90 },
+                { index: 1, val: 45 }
+            ];
+            const angleBOptions = [
+                { index: 0, val: 90 },
+                { index: 1, val: 30 },
+                { index: 2, val: 60 }
+            ];
+
+            let a = angleAOptions[Math.floor(Math.random() * angleAOptions.length)];
+            let b = angleBOptions[Math.floor(Math.random() * angleBOptions.length)];
+
+            // SUB180 の場合、合計が180度以上だと残りの角度が0以下になるので、合計が180度未満になるように再選定する
+            if (chosenType === 'SUB180') {
+                let attempts = 0;
+                while (a.val + b.val >= 180 && attempts < 20) {
+                    a = angleAOptions[Math.floor(Math.random() * angleAOptions.length)];
+                    b = angleBOptions[Math.floor(Math.random() * angleBOptions.length)];
+                    attempts++;
+                }
+                if (a.val + b.val >= 180) {
+                    chosenType = 'ADD'; // フォールバック
+                }
+            }
+
+            let problem = {
+                type: chosenType,
+                angleA: a.val,
+                angleB: b.val,
+                indexA: a.index,
+                indexB: b.index,
+                label: ['あ', 'い', 'う', 'え'][Math.floor(Math.random() * 4)],
+                ans: 0,
+                text: ""
+            };
+
+            if (chosenType === 'ADD') {
+                problem.ans = a.val + b.val;
+                problem.text = `図は、三角じょうぎの <b>${a.val}度</b> の角と <b>${b.val}度</b> の角をぴったりあわせたものです。<br>赤色の <b>「${problem.label}」</b> の角度は何度かな？`;
+            } else if (chosenType === 'SUB180') {
+                problem.ans = 180 - (a.val + b.val);
+                problem.text = `直線（平らな線＝<b>180度</b>）の上に、三角じょうぎの <b>${a.val}度</b> の角と <b>${b.val}度</b> の角をぴったりくっつけておきました。<br>赤色の <b>「${problem.label}」</b> の角度は何度かな？`;
+            } else if (chosenType === 'SUB360') {
+                problem.ans = 360 - (a.val + b.val);
+                problem.text = `1つの点のまわりに、三角じょうぎの <b>${a.val}度</b> の角と <b>${b.val}度</b> の角をぴったりあわせました。<br>1周 <b>360度</b> から定規の角をひいた、外がわの赤色の <b>「${problem.label}」</b> の角度は何度かな？`;
+            }
+
+            currentProblem = problem;
+            renderProblem();
+        }
+
+        function renderProblem() {
+            const p = currentProblem;
+            document.getElementById('question-p').innerHTML = p.text;
+
+            // Canvas再描画
+            drawScene();
+
+            // 4択ボタンの自動生成
+            generateChoices();
+        }
+
+        // 定規と赤い扇形の座標を完全に1対1で重ね合わせてズレを解消！
+        function drawScene() {
+            const p = currentProblem;
+            if (!p) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const cx = 240;
+            const cy = 180;
+
+            if (p.type === 'ADD') {
+                // 定規A(iso)を角度0から反時計回りへ
+                const rA = drawSetSquareAbsolute('iso', p.indexA, cx, cy, 0, -1);
+                // 定規B(scal)を角度0から時計回りへ
+                const rB = drawSetSquareAbsolute('scal', p.indexB, cx, cy, 0, 1);
+
+                // 赤い扇形を、定規Aの端から定規Bの端へ描く（時計回り）
+                drawAngleArc(rA.endAngle, rB.endAngle, p.label, 56, cx, cy, false);
+
+            } else if (p.type === 'SUB180') {
+                // 直線を描く
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(40, cy);
+                ctx.lineTo(440, cy);
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = '#475569';
+                ctx.stroke();
+                ctx.restore();
+
+                // 直線の右(0度)を基準に、定規Aを配置
+                const rA = drawSetSquareAbsolute('iso', p.indexA, cx, cy, 0, -1);
+                // 定規Aの端に繋げて定規Bを配置
+                const rB = drawSetSquareAbsolute('scal', p.indexB, cx, cy, rA.endAngle, -1);
+
+                // 直線の左端(-180度 ＝ -Math.PI)から、定規Bの端までを赤い扇形で覆う（時計回り）
+                drawAngleArc(-Math.PI, rB.endAngle, p.label, 62, cx, cy, false);
+
+            } else if (p.type === 'SUB360') {
+                // ADDと同じく、ぴったり重なった2枚の定規を描画
+                const rA = drawSetSquareAbsolute('iso', p.indexA, cx, cy, 0, -1);
+                const rB = drawSetSquareAbsolute('scal', p.indexB, cx, cy, 0, 1);
+
+                // 定規Bの端から定規Aの端まで、定規を避けて外側をぐるっと1周覆う（反時計回り）
+                drawAngleArc(rB.endAngle, rA.endAngle, p.label, 48, cx, cy, true);
+            }
+        }
+
+        // 選択肢の自動シャッフル・生成
+        function generateChoices() {
+            const correctAns = currentProblem.ans;
+            let choicesSet = new Set();
+            choicesSet.add(correctAns);
+
+            const candidates = [30, 45, 60, 75, 90, 105, 120, 135, 150, 180, 210, 225, 240, 255, 270, 285, 300, 315];
+            const filtered = candidates.filter(c => c !== correctAns);
+            filtered.sort(() => Math.random() - 0.5);
+
+            for (let val of filtered) {
+                if (choicesSet.size < 4) {
+                    choicesSet.add(val);
+                }
+            }
+
+            // 数字の低い順に並べて表示
+            const sortedChoices = Array.from(choicesSet).sort((a, b) => a - b);
+
+            const container = document.getElementById('choices-container');
+            container.innerHTML = '';
+
+            sortedChoices.forEach((val, idx) => {
+                const label = ["A", "B", "C", "D"][idx];
+                const btn = document.createElement('button');
+                btn.className = "choice-btn py-3 px-4 bg-blue-50 hover:bg-blue-100 active:scale-95 text-blue-900 border-2 border-blue-200 rounded-2xl font-bold transition-all text-sm md:text-base text-left flex items-center justify-between shadow-sm hover:border-blue-400";
+                btn.innerHTML = `
+                    <span class="flex items-center space-x-3">
+                        <span class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center font-pixel text-xs shrink-0">${label}</span>
+                        <span>${val} 度 (° )</span>
+                    </span>
+                    <span class="text-blue-300">▶</span>
+                `;
+                btn.addEventListener('click', () => checkAnswer(val));
+                container.appendChild(btn);
+            });
+        }
+
+
+        // --- 回答チェック ---
+        function checkAnswer(selectedVal) {
+            const p = currentProblem;
+            const isCorrect = selectedVal === p.ans;
+
+            const heroSprite = document.getElementById('hero-sprite');
+            const enemySprite = document.getElementById('enemy-sprite');
+            const slashEffect = document.getElementById('slash-effect');
+
+            if (isCorrect) {
+                sounds.playCorrect();
+
+                // じょうぎマンの攻撃アニメーション
+                heroSprite.style.transform = "translateX(50px) scale(1.1)";
+                setTimeout(() => {
+                    heroSprite.style.transform = "none";
+                    slashEffect.classList.remove('hidden');
+                    sounds.playAttack();
+
+                    enemySprite.classList.add('animate-hit');
+                    setTimeout(() => {
+                        enemySprite.classList.remove('animate-hit');
+                        slashEffect.classList.add('hidden');
+                    }, 500);
+                }, 200);
+
+                // フィードバック表示
+                document.getElementById('feedback-icon').textContent = "🎉";
+                document.getElementById('feedback-title').textContent = "大せいかい！";
+                document.getElementById('feedback-title').className = "text-2xl font-black text-green-600 font-pixel";
+
+                let expl = "";
+                if (p.type === 'ADD') {
+                    expl = `せいかい！ ${p.angleA}度 ＋ ${p.angleB}度 ＝ ${p.ans}度 だね！ぴったり合わせるたし算だ！`;
+                } else if (p.type === 'SUB180') {
+                    expl = `せいかい！直線の180度から、ぴったりならんだ2つの角をひいて、180度 ─ (${p.angleA}度 ＋ ${p.angleB}度) ＝ ${p.ans}度 と計算できるよ！`;
+                } else if (p.type === 'SUB360') {
+                    expl = `大せいかい！1周の360度から、くっついた2つの角をひいて、360度 ─ (${p.angleA}度 ＋ ${p.angleB}度) ＝ ${p.ans}度 になるね！`;
+                }
+                document.getElementById('feedback-desc').textContent = expl;
+                document.getElementById('feedback-panel').classList.remove('hidden');
+
+            } else {
+                sounds.playIncorrect();
+
+                // キングがニヤニヤ動く
+                enemySprite.style.transform = "scale(1.2) translateY(-10px)";
+                setTimeout(() => {
+                    enemySprite.style.transform = "none";
+                }, 400);
+
+                // 不正解時の表示
+                document.getElementById('feedback-icon').textContent = "😈";
+                document.getElementById('feedback-title').textContent = "ちがうよ！おしい！";
+                document.getElementById('feedback-title').className = "text-2xl font-black text-red-500 font-pixel";
+                document.getElementById('feedback-desc').textContent = "ぶんどキング「ワハハ！計算ミスをしていないかな？定規のそれぞれの角度（30°,45°,60°,90°）をよーく思い出して、計算しなおしてみよう！」";
+                document.getElementById('feedback-panel').classList.remove('hidden');
+            }
+        }
+
+
+        // --- つぎの問題へすすむボタン ---
+        document.getElementById('next-btn').addEventListener('click', () => {
+            document.getElementById('feedback-panel').classList.add('hidden');
+
+            const titleText = document.getElementById('feedback-title').textContent;
+            if (titleText === "大せいかい！") {
+                hp--;
+                updateHpBar();
+
+                if (hp > 0) {
+                    generateProblem();
+                } else {
+                    sounds.playFanfare();
+                    document.getElementById('screen-game').classList.add('hidden');
+                    document.getElementById('screen-ending').classList.remove('hidden');
+                }
+            }
+        });
+
+        // HPバーの更新
+        function updateHpBar() {
+            const percent = (hp / maxHp) * 100;
+            const bar = document.getElementById('hp-bar');
+            bar.style.width = `${percent}%`;
+            document.getElementById('hp-text').textContent = `${hp} / ${maxHp}`;
+
+            if (hp <= 2) {
+                bar.className = "bg-red-500 h-full w-full transition-all duration-500";
+            } else if (hp <= 4) {
+                bar.className = "bg-gradient-to-r from-red-500 to-orange-400 h-full w-full transition-all duration-500";
+            } else {
+                bar.className = "bg-gradient-to-r from-red-500 via-orange-400 to-green-500 h-full w-full transition-all duration-500";
+            }
+        }
+
+
+        // --- 見た目切り替えスイッチ ---
+        const styleBtn = document.getElementById('style-toggle');
+        styleBtn.addEventListener('click', () => {
+            sounds.playTone(800, 'triangle', 0.05);
+            if (currentStyle === 'cardboard') {
+                currentStyle = 'plastic';
+                styleBtn.textContent = "🎨 見た目: カラフル";
+            } else {
+                currentStyle = 'cardboard';
+                styleBtn.textContent = "🎨 見た目: ダンボール";
+            }
+            drawScene();
+        });
+
+
+        // --- リスタート ---
+        document.getElementById('restart-btn').addEventListener('click', () => {
+            sounds.playTone(800, 'triangle', 0.05);
+            hp = maxHp;
+            updateHpBar();
+            document.getElementById('screen-ending').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('hidden');
+            generateProblem();
+        });
+
+        // オープニングボタン
+        document.getElementById('start-btn').addEventListener('click', () => {
+            if (bgmOn) {
+                sounds.startBgm();
+            }
+            document.getElementById('screen-intro').classList.add('hidden');
+            document.getElementById('screen-game').classList.remove('hidden');
+            generateProblem();
+        });
+
+    </script>
+</body>
+</html>
