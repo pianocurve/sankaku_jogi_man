@@ -70,11 +70,14 @@
             <span class="text-2xl">▲</span>
             <h1 class="text-lg md:text-xl font-bold tracking-wider font-pixel">三角じょうぎマン vs ぶんどキング</h1>
         </div>
-        <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-2 md:space-x-3">
+            <button id="home-header-btn" class="bg-blue-800 hover:bg-blue-900 text-white text-xs py-1 px-3 rounded-full transition-colors flex items-center space-x-1 border border-blue-400 hidden">
+                <span>🏠 ホーム</span>
+            </button>
             <button id="bgm-toggle" class="bg-blue-800 hover:bg-blue-900 text-white text-xs py-1 px-3 rounded-full transition-colors flex items-center space-x-1 border border-blue-400">
                 <span>🔊 BGM: ON</span>
             </button>
-            <div class="text-xs bg-blue-700 px-2 py-1 rounded">小4算数・角度の計算</div>
+            <div class="text-xs bg-blue-700 px-2 py-1 rounded hidden sm:block">小4算数・角度の計算</div>
         </div>
     </header>
 
@@ -176,7 +179,7 @@
             <div class="max-w-md mx-auto space-y-2 text-left bg-blue-50 p-4 rounded-xl border border-blue-100 text-xs md:text-sm leading-relaxed">
                 <p class="font-bold text-center text-blue-700">三角じょうぎの秘密にチャレンジ！</p>
                 <p class="text-slate-600">・直角二等辺（45-45-90）と、正三角形の半分（30-60-90）の角度が基本だよ！</p>
-                <p class="text-slate-600">・すばやく回答するほど高評価（エクセレント！⚡）がもらえるタイムアタック仕様だぞ！</p>
+                <p class="text-slate-600">・すばやく回答するほど高評価（えくせれんと！⚡）がもらえるタイムアタック仕様だぞ！</p>
             </div>
         </div>
 
@@ -320,6 +323,13 @@
         <div id="screen-ending" class="w-full bg-white rounded-3xl p-6 shadow-xl border-4 border-amber-400 flex flex-col items-center space-y-6 hidden">
             <h2 class="text-3xl font-black text-amber-500 font-pixel animate-bounce">完全クリア！おめでとう！</h2>
             
+            <!-- 合計タイム表示 -->
+            <div class="text-center">
+                <div id="total-time-display" class="text-2xl md:text-3xl font-black text-indigo-600 font-pixel bg-indigo-50 py-3 px-6 rounded-2xl border-4 border-indigo-200 inline-block shadow-md">
+                    ⏱️ 0.00 秒
+                </div>
+            </div>
+
             <div class="cardboard-bg p-4 rounded-2xl w-full max-w-md flex flex-col space-y-4">
                 <div class="flex items-center space-x-4 bg-white/80 p-3 rounded-xl border border-amber-200">
                     <!-- キング涙 -->
@@ -356,8 +366,8 @@
                 </div>
 
                 <div class="bg-amber-100 p-3 rounded-xl border border-amber-300 text-xs md:text-sm leading-relaxed font-bold text-amber-900 text-center">
-                    ぶんどキング「これで角度の宿題は完ペキだな！さすがは我が愛するジョウギル王子…」<br>
-                    三角じょうぎマン「オ、オヤジ〜！スピード合格で、これでばっちり100点満点だ！」
+                    ぶんどキング「お前はじょうぎ星で行方不明（ゆくえふめい）になった、私の愛する王子…ジョウギルだ！」<br>
+                    三角じょうぎマン「ええっ！？お、オヤジ！？…まさか角度の学習が苦手な地球の子供たちのために、わざと悪役を演じていたのか！？」
                 </div>
             </div>
 
@@ -389,6 +399,7 @@
                 this.ctx = null;
                 this.muted = false;
                 this.bgmTimer = null;
+                this.bgmPlaying = false; // BGMの二重再生を防ぐためのフラグ
             }
 
             init() {
@@ -454,22 +465,32 @@
                 if (this.muted) return;
                 this.init();
                 
-                const melody = [
-                    523, 587, 659, 523, 659, 523, 587, 392,
-                    587, 659, 698, 587, 698, 587, 659, 523
-                ];
-                let time = 0;
-                melody.forEach((f, i) => {
-                    this.playTone(f, 'sine', 0.2, time);
-                    time += 0.25;
-                });
+                // すでにBGMが流れているなら二重にタイマーを作らない
+                if (this.bgmPlaying) return; 
+                this.bgmPlaying = true;
+                
+                const playNextLoop = () => {
+                    if (!this.bgmPlaying || this.muted) return;
+                    const melody = [
+                        523, 587, 659, 523, 659, 523, 587, 392,
+                        587, 659, 698, 587, 698, 587, 659, 523
+                    ];
+                    let time = 0;
+                    melody.forEach((f, i) => {
+                        this.playTone(f, 'sine', 0.2, time);
+                        time += 0.25;
+                    });
+                    this.bgmTimer = setTimeout(playNextLoop, time * 1000);
+                };
 
-                this.bgmTimer = setTimeout(() => this.startBgm(), time * 1000);
+                playNextLoop();
             }
 
             stopBgm() {
+                this.bgmPlaying = false;
                 if (this.bgmTimer) {
                     clearTimeout(this.bgmTimer);
+                    this.bgmTimer = null;
                 }
             }
         }
@@ -503,7 +524,7 @@
             return angle;
         }
 
-        // ズレを100%排除する絶対定規描画システム
+        // ズレを100%排除する絶対定規描画システム（メモリ目盛り線を完全に排除！）
         function drawSetSquareAbsolute(type, vertexIndex, cx, cy, startAngle, sweepDirection = 1) {
             let sweepAngleDeg = 0;
             let len1 = 0;
@@ -586,24 +607,6 @@
             ctx.lineWidth = currentStyle === 'cardboard' ? 2 : 1.5;
             ctx.stroke();
             
-            // 辺1（中心からx1, y1のライン）に沿って目盛り線を描く
-            ctx.save();
-            ctx.strokeStyle = currentStyle === 'cardboard' ? '#78542c' : 'rgba(0,0,0,0.35)';
-            ctx.lineWidth = 1;
-            
-            const step = 8;
-            for (let d = step; d < len1 - 5; d += step) {
-                const isMajor = (Math.round(d / step) % 5 === 0);
-                const tickL = isMajor ? 7 : 4;
-                const tx = cx + Math.cos(startAngle) * d;
-                const ty = cy + Math.sin(startAngle) * d;
-                const perpAngle = startAngle + (Math.PI / 2) * sweepDirection;
-                ctx.beginPath();
-                ctx.moveTo(tx, ty);
-                ctx.lineTo(tx + Math.cos(perpAngle) * tickL, ty + Math.sin(perpAngle) * tickL);
-                ctx.stroke();
-            }
-            ctx.restore();
             ctx.restore();
             
             return {
@@ -636,7 +639,7 @@
             }
         }
 
-        // 【基礎編専用】角のドアップをランダム回転描画
+        // 【基礎編専用】角のドアップをランダム回転描画 (目盛り・メモリ線を完全に削除)
         function drawSingleSetSquareZoomed(type, vertexIndex, rotationAngle, cx = 240, cy = 140) {
             const zoom = 2.8; // 拡大率 (2.8倍)
             const vertices = getSetSquareVerticesRelative(type, vertexIndex);
@@ -681,28 +684,6 @@
             ctx.strokeStyle = currentStyle === 'cardboard' ? '#a17849' : (type === 'iso' ? '#0891b2' : '#d97706');
             ctx.stroke();
             
-            // 目盛りを描く
-            ctx.save();
-            ctx.strokeStyle = currentStyle === 'cardboard' ? '#78542c' : 'rgba(0,0,0,0.35)';
-            ctx.lineWidth = 1 / zoom;
-            const step = 8;
-            const len1 = Math.hypot(vertices[1].x - vertices[0].x, vertices[1].y - vertices[0].y);
-            const dx = (vertices[1].x - vertices[0].x) / len1;
-            const dy = (vertices[1].y - vertices[0].y) / len1;
-            const px = -dy;
-            const py = dx;
-            
-            for (let d = step; d < len1 - 5; d += step) {
-                const isMajor = (Math.round(d / step) % 5 === 0);
-                const tickL = isMajor ? 7 : 4;
-                const tx = vertices[0].x + dx * d;
-                const ty = vertices[0].y + dy * d;
-                ctx.beginPath();
-                ctx.moveTo(tx, ty);
-                ctx.lineTo(tx + px * tickL, ty + py * tickL);
-                ctx.stroke();
-            }
-            ctx.restore();
             ctx.restore();
         }
 
@@ -731,10 +712,12 @@
             // ラベル文字「あ」「い」の位置計算
             let midAngle;
             if (forceAnticlockwise) {
+                // 反時計回りの場合
                 let diff = e - s;
                 if (diff > 0) diff -= Math.PI * 2;
                 midAngle = s + diff / 2;
             } else {
+                // 時計回りの場合（通常および360度問題）
                 let diff = e - s;
                 if (diff < 0) diff += Math.PI * 2;
                 midAngle = s + diff / 2;
@@ -767,6 +750,7 @@
         
         let problemStartTime = 0; // 問題開始時刻
         let isFirstTryOfProblem = true; // 初回トライの記録用
+        let totalElapsedSec = 0; // クリア合計秒数
 
         // モード別問題生成
         function generateProblem() {
@@ -806,7 +790,7 @@
                 vertexIndex: targetIdx,
                 rotationAngle: randRotation,
                 ans: correctAns,
-                label: "", // 基礎編は拡大した角の一部をそのまま見せるためマーク文字は不要
+                label: "", // 基礎編は拡大した角の一部をそのまま見せるためマークマークは不要
                 text: `この三角じょうぎ（${shapeLabel}）の、まんなかの角の大きさは<b>何度</b>かな？`
             };
 
@@ -874,7 +858,7 @@
             generateChoices();
         }
 
-        // スキン・頂点シフト・回転に対応したCanvasレンダリング
+        // スキン・頂点シフト・回転に対応したCanvasレンダリング (目盛り・メモリ線描画なし)
         function drawScene() {
             const p = currentProblem;
             if (!p) return;
@@ -885,12 +869,11 @@
             const cy = 180;
 
             if (p.type === 'basic') {
-                // 【基礎編】1枚の三角定規の角の一部をドアップで拡大表示！(半透明円弧は引かない)
-                // cyを少し下げて尖った部分を中心に美しくアライメント
+                // 【基礎編】1枚の三角定規の角の一部をドアップで拡大表示！(半透明円弧やメモリは引かない)
                 drawSingleSetSquareZoomed(p.squareType, p.vertexIndex, p.rotationAngle, cx, 140);
 
             } else {
-                // 【応用編】2枚の合体三角定規の描画
+                // 【応用編】2枚の合体三角定規の描画 (こちらも絶対ズレなし、メモリ描画なし)
                 if (p.calcType === 'ADD') {
                     const rA = drawSetSquareAbsolute('iso', p.indexA, cx, cy, 0, -1);
                     const rB = drawSetSquareAbsolute('scal', p.indexB, cx, cy, 0, 1);
@@ -984,6 +967,7 @@
                 // 正解のタイムスタンプ測定
                 const endTime = performance.now();
                 const elapsedSec = (endTime - problemStartTime) / 1000;
+                totalElapsedSec += elapsedSec; // 合計時間に加算
                 
                 sounds.playCorrect();
 
@@ -1112,8 +1096,14 @@
                     generateProblem();
                 } else {
                     sounds.playFanfare();
+                    // エンディング画面に合計クリアタイムを表示
+                    document.getElementById('total-time-display').innerHTML = `
+                        <span class="block text-xs md:text-sm text-slate-500 font-friendly font-normal mb-1">👑 クリア合計タイム 👑</span>
+                        ⏱️ ${totalElapsedSec.toFixed(2)} 秒
+                    `;
                     document.getElementById('screen-game').classList.add('hidden');
                     document.getElementById('screen-ending').classList.remove('hidden');
+                    document.getElementById('home-header-btn').classList.add('hidden'); // ホームボタンを隠す
                 }
             }
         });
@@ -1153,11 +1143,26 @@
                 sounds.startBgm();
             }
             hp = maxHp;
+            totalElapsedSec = 0; // 合計秒数をリセット
             updateHpBar();
             document.getElementById('screen-intro').classList.add('hidden');
             document.getElementById('screen-game').classList.remove('hidden');
+            document.getElementById('home-header-btn').classList.remove('hidden'); // ゲーム中にホームボタンを表示！
             generateProblem();
         }
+
+        // --- ホームボタンのイベント ---
+        const goHome = () => {
+            sounds.playTone(800, 'triangle', 0.05);
+            // ポップアップとゲーム中・終了画面を非表示にしてイントロへ
+            document.getElementById('feedback-panel').classList.add('hidden');
+            document.getElementById('screen-game').classList.add('hidden');
+            document.getElementById('screen-ending').classList.add('hidden');
+            document.getElementById('home-header-btn').classList.add('hidden');
+            document.getElementById('screen-intro').classList.remove('hidden');
+        };
+
+        document.getElementById('home-header-btn').addEventListener('click', goHome);
 
         // --- 見た目切り替えスイッチ ---
         const styleBtn = document.getElementById('style-toggle');
@@ -1177,6 +1182,7 @@
         // --- リスタート ---
         document.getElementById('restart-btn').addEventListener('click', () => {
             sounds.playTone(800, 'triangle', 0.05);
+            totalElapsedSec = 0; // リセット
             document.getElementById('screen-ending').classList.add('hidden');
             document.getElementById('screen-intro').classList.remove('hidden');
         });
